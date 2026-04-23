@@ -284,12 +284,29 @@
         <div class="flow-panel__body flow-panel__body-board">
           <section class="flow-board-area">
             <div class="flow-board-toolbar">
-              <div class="flow-board-toolbar__hint">화면 노드를 클릭하면 해당 프로토타입 화면으로 이동합니다.</div>
-              <div class="flow-board-toolbar__legend">
-                <span class="flow-legend-dot is-current"></span>
-                <span>현재 화면</span>
-                <span class="flow-legend-dot is-sheet"></span>
-                <span>시트/모달</span>
+              <div class="flow-board-toolbar__hint">노드를 클릭하면 해당 화면으로 이동하고, 빈 공간은 드래그해서 패닝할 수 있습니다.</div>
+              <div class="flow-board-toolbar__tools">
+                <div class="flow-toggle" role="tablist" aria-label="플로우 보기">
+                  <button class="flow-toggle__btn is-active" type="button" data-flow-view="all">All</button>
+                  <button class="flow-toggle__btn" type="button" data-flow-view="main">Main</button>
+                </div>
+
+                <div class="flow-zoom">
+                  <button class="flow-zoom__btn" type="button" data-flow-zoom="out" aria-label="축소">−</button>
+                  <button class="flow-zoom__value" type="button" data-flow-zoom="fit" id="flowZoomValue">100%</button>
+                  <button class="flow-zoom__btn" type="button" data-flow-zoom="in" aria-label="확대">+</button>
+                </div>
+
+                <div class="flow-board-toolbar__legend">
+                  <span class="flow-legend-dot is-current"></span>
+                  <span>현재 화면</span>
+                  <span class="flow-legend-dot is-main"></span>
+                  <span>메인 플로우</span>
+                  <span class="flow-legend-dot is-alt"></span>
+                  <span>분기/예외</span>
+                  <span class="flow-legend-dot is-sheet"></span>
+                  <span>시트/모달</span>
+                </div>
               </div>
             </div>
 

@@ -439,6 +439,12 @@ const FLOW_SCENARIOS = [
   }
 ];
 
+const PRIMARY_FLOW = FLOW_SCENARIOS.find((scenario) => scenario.id === "main")?.screens || MAIN_FLOW;
+const PRIMARY_FLOW_SET = new Set(PRIMARY_FLOW);
+const PRIMARY_FLOW_EDGE_SET = new Set(
+  PRIMARY_FLOW.slice(0, -1).map((id, index) => `${id}->${PRIMARY_FLOW[index + 1]}`)
+);
+
 function createDefaultBooking() {
   return {
     duration: 180,
@@ -481,7 +487,18 @@ const state = {
   runtimeMobile: false,
   mobileRuntimeBooted: false,
   mobileDevOpen: false,
-  flowPanelOpen: false
+  flowPanelOpen: false,
+  flowView: "all",
+  flowScale: 1,
+  flowPanelBooted: false,
+  flowPan: {
+    active: false,
+    pointerId: null,
+    startX: 0,
+    startY: 0,
+    scrollLeft: 0,
+    scrollTop: 0
+  }
 };
 
 const el = {
@@ -511,6 +528,7 @@ const el = {
   flowBoardGroups: document.querySelector("#flowBoardGroups"),
   flowBoardNodes: document.querySelector("#flowBoardNodes"),
   flowBoardViewport: document.querySelector("#flowBoardViewport"),
+  flowZoomValue: document.querySelector("#flowZoomValue"),
   pushPreview: document.querySelector("#pushPreview"),
   pushTitle: document.querySelector("#pushTitle"),
   pushBody: document.querySelector("#pushBody"),
@@ -637,6 +655,10 @@ function previousMainFlowId(id) {
   return MAIN_FLOW[index - 1];
 }
 
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
 function compareScreenCode(left, right) {
   const [leftGroup = "", leftIndex = "0"] = left.code.split("-");
   const [rightGroup = "", rightIndex = "0"] = right.code.split("-");
@@ -646,6 +668,24 @@ function compareScreenCode(left, right) {
   }
 
   return Number(leftIndex) - Number(rightIndex);
+}
+
+function getVisibleFlowIds(currentId) {
+  const visibleIds = new Set(state.flowView === "main" ? PRIMARY_FLOW : Object.keys(SCREENS));
+
+  if (!visibleIds.has(currentId)) {
+    visibleIds.add(currentId);
+    const current = getScreen(currentId);
+    if (current?.parent) visibleIds.add(current.parent);
+    (current?.next || []).forEach((id) => visibleIds.add(id));
+  }
+
+  return visibleIds;
+}
+
+function flowNodeState(id) {
+  if (PRIMARY_FLOW_SET.has(id)) return "main";
+  return "alt";
 }
 
 function buildFlowEdgePath(fromNode, toNode) {
@@ -755,36 +795,92 @@ function buildFlowBoardLayout() {
   };
 }
 
+function scaleFlowNode(node, scale) {
+  return {
+    ...node,
+    x: node.x * scale,
+    y: node.y * scale,
+    w: node.w * scale,
+    h: node.h * scale
+  };
+}
+
+function syncFlowToolbar() {
+  document.querySelectorAll("[data-flow-view]").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.flowView === state.flowView);
+  });
+
+  if (el.flowZoomValue) {
+    el.flowZoomValue.textContent = `${Math.round(state.flowScale * 100)}%`;
+  }
+}
+
+function fitFlowBoard() {
+  if (!el.flowBoardViewport || el.flowBoardViewport.hidden) return;
+
+  const layout = buildFlowBoardLayout();
+  const width = Math.max(320, el.flowBoardViewport.clientWidth - 48);
+  const height = Math.max(280, el.flowBoardViewport.clientHeight - 48);
+  state.flowScale = clamp(Math.min(width / layout.width, height / layout.height), 0.55, 1.25);
+}
+
+function centerFlowBoardOnCurrent(currentId) {
+  if (!el.flowBoardViewport) return;
+
+  const layout = buildFlowBoardLayout();
+  const node = layout.nodes.get(currentId);
+  if (!node) return;
+
+  const scaledNode = scaleFlowNode(node, state.flowScale);
+  const targetLeft = Math.max(0, scaledNode.x - el.flowBoardViewport.clientWidth / 2 + scaledNode.w / 2);
+  const targetTop = Math.max(0, scaledNode.y - el.flowBoardViewport.clientHeight / 2 + scaledNode.h / 2);
+
+  el.flowBoardViewport.scrollLeft = targetLeft;
+  el.flowBoardViewport.scrollTop = targetTop;
+}
+
 function renderFlowBoard(currentId) {
   if (!el.flowBoard || !el.flowBoardSvg || !el.flowBoardGroups || !el.flowBoardNodes) return;
 
   const layout = buildFlowBoardLayout();
-  const nodeEntries = [...layout.nodes.entries()];
+  const visibleIds = getVisibleFlowIds(currentId);
+  const scale = state.flowScale;
+  const nodeEntries = [...layout.nodes.entries()].filter(([id]) => visibleIds.has(id));
+  const scaledNodes = new Map(nodeEntries.map(([id, node]) => [id, scaleFlowNode(node, scale)]));
+  const visibleGroups = new Set(nodeEntries.map(([id]) => getScreen(id)?.group).filter(Boolean));
   const seenEdges = new Set();
   const edgeMarkup = [];
 
   Object.entries(SCREENS).forEach(([id, screen]) => {
-    const fromNode = layout.nodes.get(id);
+    if (!visibleIds.has(id)) return;
+
+    const fromNode = scaledNodes.get(id);
     if (!fromNode) return;
 
     (screen.next || []).forEach((nextId) => {
-      const toNode = layout.nodes.get(nextId);
+      if (!visibleIds.has(nextId)) return;
+
+      const toNode = scaledNodes.get(nextId);
       if (!toNode) return;
 
       const edgeKey = `${id}->${nextId}`;
       if (seenEdges.has(edgeKey)) return;
       seenEdges.add(edgeKey);
 
+      const edgeState = PRIMARY_FLOW_EDGE_SET.has(edgeKey) ? "main" : "alt";
+
       edgeMarkup.push(`
         <path
-          class="flow-board__edge${screen.type === "sheet" || getScreen(nextId)?.type === "sheet" ? " is-sheet" : ""}${id === currentId || nextId === currentId ? " is-current" : ""}"
+          class="flow-board__edge is-${edgeState}${screen.type === "sheet" || getScreen(nextId)?.type === "sheet" ? " is-sheet" : ""}${id === currentId || nextId === currentId ? " is-current" : ""}"
           d="${buildFlowEdgePath(fromNode, toNode)}"
         />
       `);
     });
 
     if (screen.type === "sheet" && screen.parent) {
-      const parentNode = layout.nodes.get(screen.parent);
+      if (!visibleIds.has(screen.parent)) return;
+
+      const parentNode = scaledNodes.get(screen.parent);
       if (!parentNode) return;
 
       const edgeKey = `${screen.parent}->${id}`;
@@ -793,21 +889,25 @@ function renderFlowBoard(currentId) {
 
       edgeMarkup.push(`
         <path
-          class="flow-board__edge is-sheet${screen.parent === currentId || id === currentId ? " is-current" : ""}"
+          class="flow-board__edge is-alt is-sheet${screen.parent === currentId || id === currentId ? " is-current" : ""}"
           d="${buildFlowEdgePath(parentNode, fromNode)}"
         />
       `);
     }
   });
 
-  el.flowBoard.style.width = `${layout.width}px`;
-  el.flowBoard.style.height = `${layout.height}px`;
-  el.flowBoardSvg.setAttribute("viewBox", `0 0 ${layout.width} ${layout.height}`);
+  const scaledWidth = Math.round(layout.width * scale);
+  const scaledHeight = Math.round(layout.height * scale);
+
+  el.flowBoard.style.width = `${scaledWidth}px`;
+  el.flowBoard.style.height = `${scaledHeight}px`;
+  el.flowBoardSvg.setAttribute("viewBox", `0 0 ${scaledWidth} ${scaledHeight}`);
   el.flowBoardSvg.innerHTML = edgeMarkup.join("");
 
   el.flowBoardGroups.innerHTML = layout.groups
+    .filter(({ group }) => visibleGroups.has(group))
     .map(({ group, label, x, y }) => `
-      <div class="flow-board__group" style="left:${x}px;top:${y}px;">
+      <div class="flow-board__group" style="left:${Math.round(x * scale)}px;top:${Math.round(y * scale)}px;">
         <span class="flow-board__group-code">${group}</span>
         <span>${label}</span>
       </div>
@@ -815,13 +915,15 @@ function renderFlowBoard(currentId) {
     .join("");
 
   el.flowBoardNodes.innerHTML = nodeEntries
-    .map(([id, node]) => {
+    .map(([id]) => {
+      const node = scaledNodes.get(id);
       const screen = getScreen(id);
+      const nodeState = flowNodeState(id);
       return `
         <button
-          class="flow-board__node${id === currentId ? " is-current" : ""}${screen.type === "sheet" ? " is-sheet" : ""}"
+          class="flow-board__node is-${nodeState}${id === currentId ? " is-current" : ""}${screen.type === "sheet" ? " is-sheet" : ""}"
           data-to="${id}"
-          style="left:${node.x}px;top:${node.y}px;"
+          style="left:${node.x}px;top:${node.y}px;width:${node.w}px;min-height:${node.h}px;"
         >
           <div class="flow-board__node-code">${screen.code}</div>
           <div class="flow-board__node-title">${screen.title}</div>
@@ -830,6 +932,8 @@ function renderFlowBoard(currentId) {
       `;
     })
     .join("");
+
+  syncFlowToolbar();
 }
 
 function renderFlowPanel() {
@@ -906,8 +1010,18 @@ function syncFlowPanelUI() {
   el.flowToggle.classList.toggle("is-active", isOpen);
   el.prototypeNav.classList.toggle("is-active", !isOpen);
 
+  if (!isOpen) {
+    state.flowPanelBooted = false;
+    return;
+  }
+
   if (isOpen) {
+    if (!state.flowPanelBooted) {
+      fitFlowBoard();
+      state.flowPanelBooted = true;
+    }
     renderFlowPanel();
+    centerFlowBoardOnCurrent(currentViewId());
   }
 }
 
@@ -918,6 +1032,63 @@ function syncMobileDevUI() {
   if (el.mobileDemoLabel) {
     el.mobileDemoLabel.textContent = state.demo.running ? "Stop Demo" : "Auto Demo";
   }
+}
+
+function adjustFlowScale(delta) {
+  state.flowScale = clamp(Math.round((state.flowScale + delta) * 100) / 100, 0.55, 1.4);
+}
+
+function handleFlowZoom(action) {
+  switch (action) {
+    case "in":
+      adjustFlowScale(0.1);
+      break;
+    case "out":
+      adjustFlowScale(-0.1);
+      break;
+    case "fit":
+      fitFlowBoard();
+      break;
+    default:
+      return;
+  }
+
+  renderFlowPanel();
+  if (action === "fit") {
+    centerFlowBoardOnCurrent(currentViewId());
+  }
+}
+
+function startFlowPan(event) {
+  if (!el.flowBoardViewport || event.button !== 0 || event.target.closest(".flow-board__node")) return;
+
+  state.flowPan.active = true;
+  state.flowPan.pointerId = event.pointerId;
+  state.flowPan.startX = event.clientX;
+  state.flowPan.startY = event.clientY;
+  state.flowPan.scrollLeft = el.flowBoardViewport.scrollLeft;
+  state.flowPan.scrollTop = el.flowBoardViewport.scrollTop;
+
+  el.flowBoardViewport.classList.add("is-panning");
+  el.flowBoardViewport.setPointerCapture?.(event.pointerId);
+}
+
+function moveFlowPan(event) {
+  if (!state.flowPan.active || !el.flowBoardViewport) return;
+
+  const deltaX = event.clientX - state.flowPan.startX;
+  const deltaY = event.clientY - state.flowPan.startY;
+  el.flowBoardViewport.scrollLeft = state.flowPan.scrollLeft - deltaX;
+  el.flowBoardViewport.scrollTop = state.flowPan.scrollTop - deltaY;
+}
+
+function endFlowPan(event) {
+  if (!state.flowPan.active || !el.flowBoardViewport) return;
+
+  el.flowBoardViewport.classList.remove("is-panning");
+  el.flowBoardViewport.releasePointerCapture?.(state.flowPan.pointerId ?? event.pointerId);
+  state.flowPan.active = false;
+  state.flowPan.pointerId = null;
 }
 
 function runMobileTool(tool) {
@@ -1472,6 +1643,20 @@ function handleDocumentClick(event) {
     return;
   }
 
+  const flowView = target.closest("[data-flow-view]");
+  if (flowView) {
+    state.flowView = flowView.dataset.flowView;
+    renderFlowPanel();
+    centerFlowBoardOnCurrent(currentViewId());
+    return;
+  }
+
+  const flowZoom = target.closest("[data-flow-zoom]");
+  if (flowZoom) {
+    handleFlowZoom(flowZoom.dataset.flowZoom);
+    return;
+  }
+
   if (state.mobileDevOpen && !target.closest("#mobileDev")) {
     state.mobileDevOpen = false;
     syncMobileDevUI();
@@ -1607,6 +1792,11 @@ function bindEvents() {
   });
 
   el.demoToggle?.addEventListener("click", toggleDemo);
+  el.flowBoardViewport?.addEventListener("pointerdown", startFlowPan);
+  el.flowBoardViewport?.addEventListener("pointermove", moveFlowPan);
+  el.flowBoardViewport?.addEventListener("pointerup", endFlowPan);
+  el.flowBoardViewport?.addEventListener("pointercancel", endFlowPan);
+  el.flowBoardViewport?.addEventListener("pointerleave", endFlowPan);
   window.addEventListener("resize", syncRuntimeMode);
   window.addEventListener("orientationchange", syncRuntimeMode);
   window.matchMedia?.("(display-mode: standalone)")?.addEventListener?.("change", syncRuntimeMode);
