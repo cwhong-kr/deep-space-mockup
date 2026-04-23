@@ -1,0 +1,2196 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#05080f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="DEEP SPACE" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>DEEP SPACE — Time, Designed.</title>
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="icon" href="app-icon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============================================================= -->
+  <!-- 우주 배경 레이어                                                -->
+  <!-- ============================================================= -->
+  <div class="cosmos" aria-hidden="true">
+    <div class="cosmos-grid"></div>
+    <div class="cosmos-stars stars-sm"></div>
+    <div class="cosmos-stars stars-md"></div>
+    <div class="cosmos-stars stars-lg"></div>
+    <div class="cosmos-nebula nebula-a"></div>
+    <div class="cosmos-nebula nebula-b"></div>
+    <div class="cosmos-wormhole"></div>
+    <div class="cosmos-scanline"></div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- 메인 쉘                                                        -->
+  <!-- ============================================================= -->
+  <div class="shell">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.2"/>
+            <circle cx="16" cy="16" r="7" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+            <circle cx="16" cy="16" r="2" fill="currentColor"/>
+            <path d="M2 16 H30" stroke="currentColor" stroke-width="0.6" opacity="0.4"/>
+          </svg>
+          <div class="brand-text">
+            <div class="brand-name">DEEP SPACE</div>
+            <div class="brand-tag">Time, Designed.</div>
+          </div>
+        </div>
+        <div class="topbar-divider"></div>
+        <nav class="topnav">
+          <a class="topnav-link is-active">Prototype</a>
+          <a class="topnav-link">Flow</a>
+          <a class="topnav-link">Components</a>
+          <a class="topnav-link">Tokens</a>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span>v0.1 · MVP</span>
+        </div>
+        <div class="status-pill">
+          <span>2026.04.22</span>
+        </div>
+        <button class="btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+        <button class="btn-primary-sm" id="demoToggle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span id="demoToggleLabel">Auto Demo</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="workspace">
+
+      <!-- 좌측: 화면 네비게이터 -->
+      <aside class="rail rail-left">
+        <div class="rail-header">
+          <div class="rail-eyebrow">SCREENS</div>
+          <div class="rail-title">Prototype Set</div>
+        </div>
+        <div class="rail-search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search screens…" id="railSearch" />
+          <kbd>⌘K</kbd>
+        </div>
+
+        <nav class="rail-nav" id="railNav">
+          <div class="nav-group" data-group="A">
+            <div class="nav-group-head"><span class="gcode">A</span><span class="gname">인증 · 온보딩</span></div>
+            <button class="nav-item" data-screen="a-01"><span class="code">A-01</span><span class="label">스플래시</span></button>
+            <button class="nav-item" data-screen="a-02"><span class="code">A-02</span><span class="label">로그인</span></button>
+          </div>
+
+          <div class="nav-group" data-group="B">
+            <div class="nav-group-head"><span class="gcode">B</span><span class="gname">홈 · 대시보드</span></div>
+            <button class="nav-item" data-screen="b-01"><span class="code">B-01</span><span class="label">홈</span></button>
+          </div>
+
+          <div class="nav-group" data-group="C">
+            <div class="nav-group-head"><span class="gcode">C</span><span class="gname">지점 검색</span></div>
+            <button class="nav-item" data-screen="c-01"><span class="code">C-01</span><span class="label">지점 검색 · 지도</span></button>
+            <button class="nav-item" data-screen="c-02"><span class="code">C-02</span><span class="label">지점 상세</span></button>
+          </div>
+
+          <div class="nav-group" data-group="D">
+            <div class="nav-group-head"><span class="gcode">D</span><span class="gname">예약</span></div>
+            <button class="nav-item" data-screen="d-01"><span class="code">D-01</span><span class="label">날짜 · 시간 선택</span></button>
+            <button class="nav-item" data-screen="d-04"><span class="code">D-04</span><span class="label">예약 완료</span></button>
+          </div>
+
+          <div class="nav-group" data-group="F">
+            <div class="nav-group-head"><span class="gcode">F</span><span class="gname">체크인 · 이용</span></div>
+            <button class="nav-item" data-screen="f-01"><span class="code">F-01</span><span class="label">체크인 (QR)</span></button>
+            <button class="nav-item" data-screen="f-03"><span class="code">F-03</span><span class="label">이용 현황</span></button>
+            <button class="nav-item" data-screen="f-04"><span class="code">F-04</span><span class="label">충전 상세</span></button>
+          </div>
+
+          <div class="nav-group" data-group="G">
+            <div class="nav-group-head"><span class="gcode">G</span><span class="gname">퇴실 · 정산</span></div>
+            <button class="nav-item" data-screen="g-02"><span class="code">G-02</span><span class="label">정산 완료</span></button>
+          </div>
+
+          <div class="nav-group" data-group="H">
+            <div class="nav-group-head"><span class="gcode">H</span><span class="gname">마이페이지</span></div>
+            <button class="nav-item" data-screen="h-01"><span class="code">H-01</span><span class="label">마이페이지</span></button>
+          </div>
+        </nav>
+
+        <div class="rail-footer">
+          <div class="legend">
+            <div class="legend-dot dot-ok"></div><span>완성</span>
+            <div class="legend-dot dot-warn"></div><span>WIP</span>
+          </div>
+          <div class="legend-count"><span id="screenCount">12</span> / 32 screens</div>
+        </div>
+      </aside>
+
+      <!-- 중앙: iPhone 스테이지 -->
+      <section class="stage">
+        <div class="stage-header">
+          <div class="crumbs">
+            <span class="crumb" id="crumbGroup">B · 홈</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
+            <span class="crumb crumb-active" id="crumbScreen">B-01 홈</span>
+          </div>
+          <div class="stage-toolbar">
+            <button class="tool-btn" title="그리드"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></button>
+            <button class="tool-btn" title="룰러"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 3H3a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z"/><path d="M7 3v3m5-3v2m5-2v3"/></svg></button>
+            <button class="tool-btn" title="테마"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+            <div class="tool-divider"></div>
+            <div class="tool-zoom">
+              <button class="zoom-btn">–</button>
+              <span class="zoom-val">100%</span>
+              <button class="zoom-btn">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-surface" id="stageSurface">
+          <div class="device-shadow"></div>
+
+          <!-- iPhone 16 Pro 프레임 -->
+          <div class="device" id="device">
+            <div class="device-frame"></div>
+            <div class="device-btn device-btn-silence"></div>
+            <div class="device-btn device-btn-volup"></div>
+            <div class="device-btn device-btn-voldn"></div>
+            <div class="device-btn device-btn-power"></div>
+
+            <div class="device-screen">
+              <!-- 상태 바 -->
+              <div class="status-bar">
+                <span class="sb-time">9:41</span>
+                <span class="dynamic-island"></span>
+                <span class="sb-icons">
+                  <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="4" width="3" height="7" rx="1"/><rect x="10" y="1" width="3" height="10" rx="1"/></svg>
+                  <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 2C4.5 2 2 3.3 0 5l1.5 1.5C3 5.2 5.1 4.3 7.5 4.3S12 5.2 13.5 6.5L15 5c-2-1.7-4.5-3-7.5-3zm0 3.5c-2 0-3.8.8-5 2l1.5 1.5c1-1 2.2-1.5 3.5-1.5s2.5.5 3.5 1.5L12.5 7.5c-1.2-1.2-3-2-5-2zm0 3.5c-1 0-1.9.4-2.5 1l2.5 2.5L10 10c-.6-.6-1.5-1-2.5-1z"/></svg>
+                  <span class="sb-battery"><span class="sb-battery-fill"></span></span>
+                </span>
+              </div>
+
+              <div class="app-viewport" id="appViewport">
+                <div class="app-screen is-active" id="appScreen"></div>
+              </div>
+
+              <div class="toast-layer" id="toastLayer"></div>
+
+              <!-- 바텀시트 레이어 -->
+              <div class="sheet-layer" id="sheetLayer"></div>
+
+              <div class="mobile-dev" id="mobileDev">
+                <div class="mobile-dev__panel" id="mobileDevPanel">
+                  <button class="mobile-dev__action" type="button" data-mobile-tool="demo">
+                    <span class="mobile-dev__pulse"></span>
+                    <span id="mobileDemoLabel">Auto Demo</span>
+                  </button>
+                  <button class="mobile-dev__action" type="button" data-mobile-tool="splash">Splash</button>
+                  <button class="mobile-dev__action" type="button" data-mobile-tool="home">Home</button>
+                  <button class="mobile-dev__action" type="button" data-mobile-tool="route">Route</button>
+                  <button class="mobile-dev__action" type="button" data-mobile-tool="use">Using</button>
+                </div>
+                <button class="mobile-dev__fab" id="mobileDevToggle" type="button" aria-label="디버그 메뉴">
+                  DEV
+                </button>
+              </div>
+
+              <!-- 홈 인디케이터 -->
+              <div class="home-indicator"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-footer">
+          <div class="stage-hint">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            화면 내부 버튼과 하단 탭바는 실제로 작동합니다
+          </div>
+          <div class="flow-chips" id="flowChips"></div>
+        </div>
+      </section>
+
+      <!-- 우측: 메타 패널 -->
+      <aside class="rail rail-right">
+        <div class="meta-card">
+          <div class="meta-id" id="metaId">B-01</div>
+          <div class="meta-title" id="metaTitle">홈 / 대시보드</div>
+          <div class="meta-desc" id="metaDesc">서비스 진입점. 현재 상태 요약과 근처 지점을 한눈에 확인합니다.</div>
+        </div>
+
+        <div class="meta-section">
+          <div class="meta-eyebrow">PURPOSE</div>
+          <div class="meta-body" id="metaPurpose">서비스 진입점, 현재 상태 요약</div>
+        </div>
+
+        <div class="meta-section">
+          <div class="meta-eyebrow">COMPONENTS</div>
+          <ul class="comp-list" id="compList"></ul>
+        </div>
+
+        <div class="meta-section">
+          <div class="meta-eyebrow">FLOW NEXT</div>
+          <div class="flow-nexts" id="flowNexts"></div>
+        </div>
+
+        <div class="meta-section push-preview" id="pushPreview">
+          <div class="meta-eyebrow">PUSH PREVIEW</div>
+          <div class="push-card">
+            <div class="push-head">
+              <div class="push-app">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+                <span>DEEP SPACE</span>
+              </div>
+              <span class="push-time">지금</span>
+            </div>
+            <div class="push-title" id="pushTitle">예약이 확정되었습니다</div>
+            <div class="push-body" id="pushBody">📅 4/22(수) 11:00–13:00<br>📍 세종로 DS · 라운지 A-7 · 충전기 C-03</div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- 화면 템플릿                                                         -->
+  <!-- ================================================================= -->
+
+  <!-- A-01 스플래시 -->
+  <template id="tpl-a-01">
+    <div class="scr scr-splash">
+      <div class="splash-cosmos">
+        <div class="splash-orbit orbit-1"></div>
+        <div class="splash-orbit orbit-2"></div>
+        <div class="splash-orbit orbit-3"></div>
+        <div class="splash-core"></div>
+        <div class="splash-stars"></div>
+      </div>
+      <div class="splash-logo">
+        <svg viewBox="0 0 80 80" fill="none">
+          <circle cx="40" cy="40" r="36" stroke="rgba(255,255,255,0.6)" stroke-width="0.8"/>
+          <circle cx="40" cy="40" r="20" stroke="rgba(255,255,255,0.4)" stroke-width="0.6"/>
+          <circle cx="40" cy="40" r="5" fill="#fff"/>
+        </svg>
+        <div class="splash-wordmark">
+          <div class="splash-name">DEEP</div>
+          <div class="splash-sub">SPACE</div>
+        </div>
+        <div class="splash-tagline">Time, Designed.</div>
+      </div>
+      <div class="splash-loader">
+        <div class="splash-loader-bar"></div>
+      </div>
+      <div class="splash-foot">© 2026 Deep Space Inc.</div>
+    </div>
+  </template>
+
+  <!-- A-02 로그인 -->
+  <template id="tpl-a-02">
+    <div class="scr scr-login">
+      <div class="login-bg"></div>
+      <div class="login-header">
+        <svg class="login-mark" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="18" stroke="#fff" stroke-width="0.8" opacity="0.8"/>
+          <circle cx="20" cy="20" r="10" stroke="#fff" stroke-width="0.6" opacity="0.5"/>
+          <circle cx="20" cy="20" r="3" fill="#fff"/>
+        </svg>
+        <h1 class="login-title">시간을 디자인하는<br/>첫 걸음</h1>
+        <p class="login-sub">3초 만에 시작하세요</p>
+      </div>
+      <div class="login-actions">
+        <button class="btn-social social-kakao" data-to="a-03">
+          <span class="social-ic social-ic-kakao">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.5 3 2 6.5 2 10.9c0 2.8 1.9 5.2 4.7 6.6l-1 3.7c-.1.4.3.7.7.5l4.4-2.9c.4 0 .8.1 1.2.1 5.5 0 10-3.5 10-7.9S17.5 3 12 3z"/></svg>
+          </span>
+          카카오로 계속하기
+        </button>
+        <button class="btn-social social-apple" data-to="a-03">
+          <span class="social-ic">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.3c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.6.9s-1.9-.8-3.1-.8c-1.6 0-3.1.9-3.9 2.4-1.7 2.9-.4 7.2 1.2 9.5.8 1.1 1.8 2.4 3 2.3 1.2 0 1.7-.8 3.1-.8s1.9.8 3.1.7c1.3 0 2.1-1.1 2.9-2.3.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.6-1-2.6-3.6zM14 4.8c.6-.8 1.1-1.9 1-3-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2-.5 2.7-1.3z"/></svg>
+          </span>
+          Apple로 계속하기
+        </button>
+        <button class="btn-social social-google" data-to="a-03">
+          <span class="social-ic">
+            <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22 12.2c0-.8-.1-1.5-.2-2.2H12v4.2h5.6c-.2 1.3-1 2.4-2 3.1v2.6h3.3c1.9-1.8 3-4.4 3-7.7z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.7-2.4l-3.3-2.5c-.9.6-2.1 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3A10 10 0 0 0 2 12c0 1.6.4 3.2 1 4.6L6.4 14z"/><path fill="#EA4335" d="M12 5.8c1.5 0 2.8.5 3.8 1.5l2.9-2.9C16.9 2.8 14.6 2 12 2A10 10 0 0 0 3 7.4L6.4 10c.8-2.3 3-4.1 5.6-4.1z"/></svg>
+          </span>
+          Google로 계속하기
+        </button>
+      </div>
+      <div class="login-links">
+        <a>이메일 · 휴대폰 로그인</a>
+        <span class="dot">·</span>
+        <a>회원가입</a>
+      </div>
+      <div class="login-terms">
+        계속하면 <u>이용약관</u>과 <u>개인정보처리방침</u>에<br/>동의하는 것으로 간주됩니다.
+      </div>
+    </div>
+  </template>
+
+  <!-- B-01 홈 -->
+  <template id="tpl-b-01">
+    <div class="scr scr-home">
+      <header class="app-header">
+        <button class="icon-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="app-brand">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="0.8"/><circle cx="12" cy="12" r="2" fill="#fff"/></svg>
+          <span>DEEP</span>
+        </div>
+        <button class="icon-btn has-badge" data-to="b-02">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="dot-badge">2</span>
+        </button>
+      </header>
+
+      <main class="app-body">
+        <section class="greet">
+          <div class="greet-time">좋은 아침이에요,</div>
+          <div class="greet-name">지민님</div>
+        </section>
+
+        <section class="vehicle-card">
+          <div class="vehicle-head">
+            <div>
+              <div class="vehicle-label">MY VEHICLE</div>
+              <div class="vehicle-model">Tesla Model 3</div>
+              <div class="vehicle-plate">12가 3456</div>
+            </div>
+            <svg class="vehicle-illus" viewBox="0 0 120 60" fill="none">
+              <path d="M10 40 Q15 28 30 25 L90 25 Q105 28 110 40" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" fill="rgba(255,255,255,0.03)"/>
+              <path d="M15 40 L105 40" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+              <circle cx="30" cy="44" r="6" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
+              <circle cx="90" cy="44" r="6" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
+              <path d="M35 32 L85 32" stroke="rgba(94,197,255,0.5)" stroke-width="0.6"/>
+            </svg>
+          </div>
+          <div class="vehicle-battery">
+            <div class="bat-row">
+              <span class="bat-label">배터리</span>
+              <span class="bat-val"><b>42</b>%</span>
+            </div>
+            <div class="bat-track">
+              <div class="bat-fill" style="width:42%"></div>
+            </div>
+            <div class="bat-meta">
+              <span>주행 가능 · 약 168 km</span>
+              <span class="bat-charging">● 충전 가능</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="quick-grid">
+          <button class="quick" data-to="c-01">
+            <div class="quick-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <div class="quick-label">충전하기</div>
+          </button>
+          <button class="quick" data-to="c-01">
+            <div class="quick-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></div>
+            <div class="quick-label">라운지</div>
+          </button>
+          <button class="quick" data-to="e-01">
+            <div class="quick-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
+            <div class="quick-label">길 안내</div>
+          </button>
+          <button class="quick quick-accent" data-to="c-01">
+            <div class="quick-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="quick-label">예약하기</div>
+          </button>
+        </section>
+
+        <section class="near-head">
+          <div>
+            <div class="near-eyebrow">NEAR YOU</div>
+            <div class="near-title">근처 Deep Space</div>
+          </div>
+          <button class="near-more" data-to="c-01">지도 ›</button>
+        </section>
+
+        <div class="near-list">
+          <button class="spot-card" data-to="c-02">
+            <div class="spot-badge"><span class="ok-dot"></span><span>여유</span></div>
+            <div class="spot-name">세종로 Deep Space</div>
+            <div class="spot-addr">세종로공영주차장 B4 · C423</div>
+            <div class="spot-meta">
+              <span><b>1.2</b>km</span>
+              <span class="sep"></span>
+              <span>라운지 <b>4</b>/12</span>
+              <span class="sep"></span>
+              <span>충전 <b>3</b>/6</span>
+            </div>
+          </button>
+          <button class="spot-card" data-to="c-02">
+            <div class="spot-badge badge-warn"><span class="warn-dot"></span><span>혼잡</span></div>
+            <div class="spot-name">광화문 Deep Space</div>
+            <div class="spot-addr">광화문빌딩 B2 · A204</div>
+            <div class="spot-meta">
+              <span><b>2.1</b>km</span>
+              <span class="sep"></span>
+              <span>라운지 <b>1</b>/10</span>
+              <span class="sep"></span>
+              <span>충전 <b>0</b>/4</span>
+            </div>
+          </button>
+        </div>
+
+        <section class="notice-banner">
+          <div class="notice-eyebrow">NOTICE</div>
+          <div class="notice-body">4/30(목) 새벽 2–4시 정기 점검으로 일부 기능이 제한됩니다.</div>
+        </section>
+      </main>
+
+      <div class="tabbar-spacer"></div>
+      <nav class="tabbar" data-tabbar>
+        <button class="tab is-active" data-to="b-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>홈</span></button>
+        <button class="tab" data-to="f-03"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>이용현황</span></button>
+        <button class="tab" data-to="c-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>예약</span></button>
+        <button class="tab" data-to="h-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>마이</span></button>
+      </nav>
+    </div>
+  </template>
+
+  <!-- C-01 지점 검색 지도 -->
+  <template id="tpl-c-01">
+    <div class="scr scr-map">
+      <header class="app-header app-header-float">
+        <button class="icon-btn" data-to="b-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <button class="map-searchbar" data-to="c-03"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>지점 또는 목적지를 검색하세요</span></button>
+        <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button>
+      </header>
+
+      <div class="map-canvas">
+        <svg class="map-grid-svg" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="mapGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(94,197,255,0.08)" stroke-width="0.5"/>
+            </pattern>
+            <radialGradient id="mapGlow" cx="50%" cy="40%" r="60%">
+              <stop offset="0%" stop-color="rgba(94,197,255,0.15)"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#mapGrid)"/>
+          <rect width="100%" height="100%" fill="url(#mapGlow)"/>
+          <path d="M 0 180 Q 150 200 250 160 T 400 180" stroke="rgba(255,255,255,0.1)" stroke-width="18" fill="none"/>
+          <path d="M 0 180 Q 150 200 250 160 T 400 180" stroke="rgba(255,255,255,0.25)" stroke-width="1" fill="none"/>
+          <path d="M 120 0 Q 140 200 180 350 T 220 600" stroke="rgba(255,255,255,0.1)" stroke-width="14" fill="none"/>
+          <path d="M 120 0 Q 140 200 180 350 T 220 600" stroke="rgba(255,255,255,0.25)" stroke-width="1" fill="none"/>
+          <path d="M 0 420 L 400 400" stroke="rgba(255,255,255,0.08)" stroke-width="10" fill="none"/>
+          <rect x="40" y="240" width="60" height="60" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)"/>
+          <rect x="260" y="260" width="80" height="50" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)"/>
+          <rect x="50" y="450" width="100" height="70" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)"/>
+          <rect x="260" y="450" width="80" height="80" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)"/>
+        </svg>
+
+        <div class="me-marker" style="top:40%;left:45%">
+          <div class="me-pulse"></div>
+          <div class="me-dot"></div>
+        </div>
+
+        <button class="pin pin-ok" style="top:28%;left:58%" data-to="c-02">
+          <div class="pin-bubble"><div class="pin-count">4</div><div class="pin-label">세종로</div></div>
+          <div class="pin-tail"></div>
+        </button>
+        <button class="pin pin-warn" style="top:52%;left:30%">
+          <div class="pin-bubble"><div class="pin-count">1</div><div class="pin-label">광화문</div></div>
+          <div class="pin-tail"></div>
+        </button>
+        <button class="pin pin-ok" style="top:65%;left:72%">
+          <div class="pin-bubble"><div class="pin-count">7</div><div class="pin-label">삼성동</div></div>
+          <div class="pin-tail"></div>
+        </button>
+        <button class="pin pin-err" style="top:18%;left:25%">
+          <div class="pin-bubble"><div class="pin-count">0</div><div class="pin-label">시청</div></div>
+          <div class="pin-tail"></div>
+        </button>
+
+        <button class="map-fab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+        </button>
+
+        <div class="map-sheet">
+          <div class="sheet-grip"></div>
+          <div class="sheet-head">
+            <div>
+              <div class="sheet-count">주변 지점 <b>4</b>곳</div>
+              <div class="sheet-sub">반경 3 km · 현위치 기준</div>
+            </div>
+            <div class="sort-toggle">
+              <button class="is-active">거리순</button>
+              <button>좌석순</button>
+              <button>충전기순</button>
+            </div>
+          </div>
+          <div class="sheet-scroll">
+            <button class="sheet-card" data-to="c-02">
+              <div class="sc-head">
+                <div>
+                  <div class="sc-name">세종로 Deep Space</div>
+                  <div class="sc-addr">세종로공영주차장 B4 · C423</div>
+                </div>
+                <div class="sc-dist"><b>1.2</b><i>km</i></div>
+              </div>
+              <div class="sc-metrics">
+                <div class="sc-metric"><span class="sc-dot sc-ok"></span><span class="sc-label">라운지</span><span class="sc-val">4 / 12</span></div>
+                <div class="sc-metric"><span class="sc-dot sc-ok"></span><span class="sc-label">충전기</span><span class="sc-val">3 / 6</span></div>
+                <div class="sc-metric"><span class="sc-label">회의실</span><span class="sc-val">4인 · 가능</span></div>
+              </div>
+            </button>
+            <button class="sheet-card">
+              <div class="sc-head">
+                <div>
+                  <div class="sc-name">광화문 Deep Space</div>
+                  <div class="sc-addr">광화문빌딩 B2 · A204</div>
+                </div>
+                <div class="sc-dist"><b>2.1</b><i>km</i></div>
+              </div>
+              <div class="sc-metrics">
+                <div class="sc-metric"><span class="sc-dot sc-warn"></span><span class="sc-label">라운지</span><span class="sc-val">1 / 10</span></div>
+                <div class="sc-metric"><span class="sc-dot sc-err"></span><span class="sc-label">충전기</span><span class="sc-val">0 / 4</span></div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <nav class="tabbar" data-tabbar>
+        <button class="tab" data-to="b-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>홈</span></button>
+        <button class="tab" data-to="f-03"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>이용현황</span></button>
+        <button class="tab is-active" data-to="c-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>예약</span></button>
+        <button class="tab" data-to="h-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>마이</span></button>
+      </nav>
+    </div>
+  </template>
+
+  <!-- C-02 지점 상세 -->
+  <template id="tpl-c-02">
+    <div class="scr scr-detail">
+      <div class="detail-hero">
+        <div class="detail-hero-img">
+          <svg viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="heroG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0A1428"/>
+                <stop offset="100%" stop-color="#1B2A4A"/>
+              </linearGradient>
+              <radialGradient id="heroGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(232,184,74,0.4)"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+            </defs>
+            <rect width="400" height="240" fill="url(#heroG)"/>
+            <circle cx="200" cy="120" r="90" fill="url(#heroGlow)"/>
+            <circle cx="200" cy="120" r="55" fill="#E8B84A" opacity="0.9"/>
+            <circle cx="200" cy="120" r="55" stroke="#fff" stroke-width="0.3" opacity="0.4"/>
+            <ellipse cx="200" cy="120" rx="100" ry="12" stroke="rgba(255,255,255,0.3)" stroke-width="0.6" fill="none"/>
+            <ellipse cx="200" cy="120" rx="130" ry="18" stroke="rgba(255,255,255,0.2)" stroke-width="0.4" fill="none"/>
+          </svg>
+        </div>
+        <header class="detail-bar">
+          <button class="icon-btn icon-btn-glass" data-to="c-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+          <div class="detail-pager">1 / 5</div>
+          <button class="icon-btn icon-btn-glass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
+        </header>
+      </div>
+
+      <main class="app-body detail-body">
+        <section class="detail-head">
+          <div class="dh-row">
+            <div class="dh-name">세종로 Deep Space</div>
+            <div class="dh-rate"><span>★</span><b>4.8</b></div>
+          </div>
+          <div class="dh-addr">세종로공영주차장 지하 4층 · C423 구역</div>
+          <div class="dh-chips">
+            <span class="chip chip-ok">● 여유</span>
+            <span class="chip">1.2 km</span>
+            <span class="chip">평일 07:00–22:00</span>
+          </div>
+        </section>
+
+        <section class="status-grid">
+          <div class="status-tile">
+            <div class="st-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></div>
+            <div class="st-label">라운지</div>
+            <div class="st-val"><b>4</b><i>/ 12</i></div>
+            <div class="st-foot ok">잔여 4석</div>
+          </div>
+          <div class="status-tile">
+            <div class="st-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <div class="st-label">완속 충전</div>
+            <div class="st-val"><b>3</b><i>/ 6</i></div>
+            <div class="st-foot ok">7 kW · 가능</div>
+          </div>
+          <div class="status-tile">
+            <div class="st-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <div class="st-label">4인 회의실</div>
+            <div class="st-val"><b>1</b><i>/ 1</i></div>
+            <div class="st-foot ok">예약 가능</div>
+          </div>
+          <div class="status-tile">
+            <div class="st-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <div class="st-label">8인 회의실</div>
+            <div class="st-val"><b>0</b><i>/ 1</i></div>
+            <div class="st-foot warn">사용중 · 13:00 가능</div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head"><div class="section-title">편의시설</div></div>
+          <div class="amen-grid">
+            <div class="amen"><div class="amen-ic">📶</div><span>Wi-Fi</span></div>
+            <div class="amen"><div class="amen-ic">🖨️</div><span>프린터</span></div>
+            <div class="amen"><div class="amen-ic">☕️</div><span>음료</span></div>
+            <div class="amen"><div class="amen-ic">🔒</div><span>사물함</span></div>
+            <div class="amen"><div class="amen-ic">📞</div><span>폰부스</span></div>
+            <div class="amen"><div class="amen-ic">🚻</div><span>화장실</span></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head"><div class="section-title">주차장 내 위치</div></div>
+          <div class="mini-map">
+            <svg viewBox="0 0 320 140" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <pattern id="dots" width="8" height="8" patternUnits="userSpaceOnUse">
+                  <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.1)"/>
+                </pattern>
+              </defs>
+              <rect width="320" height="140" fill="url(#dots)"/>
+              <rect x="20" y="20" width="280" height="100" rx="4" stroke="rgba(255,255,255,0.25)" stroke-width="1" fill="rgba(255,255,255,0.02)"/>
+              <text x="30" y="38" fill="rgba(255,255,255,0.5)" font-size="10" font-family="JetBrains Mono">B4 · C SECTION</text>
+              <rect x="40" y="50" width="60" height="50" stroke="rgba(255,255,255,0.2)" stroke-width="0.6" fill="none"/>
+              <rect x="110" y="50" width="60" height="50" stroke="rgba(255,255,255,0.2)" stroke-width="0.6" fill="none"/>
+              <rect x="180" y="50" width="60" height="50" stroke="#5EC5FF" stroke-width="1.4" fill="rgba(94,197,255,0.1)"/>
+              <text x="210" y="78" fill="#5EC5FF" font-size="10" font-family="JetBrains Mono" text-anchor="middle">DS</text>
+              <text x="210" y="92" fill="#5EC5FF" font-size="7" text-anchor="middle">C423</text>
+              <rect x="250" y="50" width="50" height="50" stroke="rgba(255,255,255,0.2)" stroke-width="0.6" fill="none"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head"><div class="section-title">주차 요금</div></div>
+          <div class="fare-card">
+            <div class="fare-row"><span>DS 이용 시</span><span class="fare-hl">최초 1시간 무료</span></div>
+            <div class="fare-row"><span>초과 요금</span><span>시간당 1,000원</span></div>
+          </div>
+        </section>
+      </main>
+
+      <div class="detail-cta">
+        <button class="btn-ghost-lg" data-to="e-01">길 안내</button>
+        <button class="btn-primary" data-to="d-01">
+          예약하기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </div>
+  </template>
+
+  <!-- D-01 날짜/시간 -->
+  <template id="tpl-d-01">
+    <div class="scr scr-pick">
+      <header class="app-header">
+        <button class="icon-btn" data-to="c-02"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">예약</div>
+        <div class="header-step">1 / 3</div>
+      </header>
+
+      <main class="app-body">
+        <section class="pick-spot">
+          <div class="ps-eyebrow">지점</div>
+          <div class="ps-name">세종로 Deep Space</div>
+          <div class="ps-addr">세종로공영주차장 B4 · C423</div>
+        </section>
+
+        <section class="section-tight">
+          <div class="section-title">날짜 선택</div>
+          <div class="calendar">
+            <div class="cal-head">
+              <button class="cal-nav">‹</button>
+              <div class="cal-month">2026년 4월</div>
+              <button class="cal-nav">›</button>
+            </div>
+            <div class="cal-dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+            <div class="cal-grid">
+              <span class="cd cd-dim">29</span><span class="cd cd-dim">30</span><span class="cd cd-dim">31</span><span class="cd cd-dim">1</span><span class="cd cd-dim">2</span><span class="cd cd-dim">3</span><span class="cd cd-dim">4</span>
+              <span class="cd cd-dim">5</span><span class="cd cd-dim">6</span><span class="cd cd-dim">7</span><span class="cd cd-dim">8</span><span class="cd cd-dim">9</span><span class="cd cd-dim">10</span><span class="cd cd-dim">11</span>
+              <span class="cd cd-dim">12</span><span class="cd cd-dim">13</span><span class="cd cd-dim">14</span><span class="cd cd-dim">15</span><span class="cd cd-dim">16</span><span class="cd cd-dim">17</span><span class="cd cd-dim">18</span>
+              <span class="cd cd-dim">19</span><span class="cd cd-dim">20</span><span class="cd cd-dim">21</span><span class="cd is-picked">22</span><span class="cd">23</span><span class="cd">24</span><span class="cd">25</span>
+              <span class="cd">26</span><span class="cd">27</span><span class="cd">28</span><span class="cd">29</span><span class="cd">30</span><span class="cd cd-dim">1</span><span class="cd cd-dim">2</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-tight">
+          <div class="section-title">시간 선택 <span class="section-hint">30분 단위</span></div>
+          <div class="time-range">
+            <div class="tr-field">
+              <div class="tr-label">시작</div>
+              <div class="tr-val" id="bookingStart">11:00</div>
+            </div>
+            <div class="tr-arrow">→</div>
+            <div class="tr-field">
+              <div class="tr-label">종료</div>
+              <div class="tr-val" id="bookingEnd">13:00</div>
+            </div>
+            <div class="tr-dur" id="bookingDurationLabel">2시간</div>
+          </div>
+          <div class="time-chips">
+            <button class="tchip" data-duration="90">+30분</button>
+            <button class="tchip" data-duration="120">+1시간</button>
+            <button class="tchip" data-duration="150">+1시간 30분</button>
+            <button class="tchip tchip-on" data-duration="180">+2시간</button>
+            <button class="tchip" data-duration="240">+3시간</button>
+          </div>
+        </section>
+
+        <section class="avail-card">
+          <div class="avail-row">
+            <span class="av-label">선택 시간대 잔여</span>
+            <span class="av-badge">실시간</span>
+          </div>
+          <div class="avail-metrics">
+            <div class="am"><div class="am-label">라운지</div><div class="am-val"><span id="bookingAvailLounge">4</span><i>/ 12</i></div></div>
+            <div class="am"><div class="am-label">충전기</div><div class="am-val"><span id="bookingAvailCharger">3</span><i>/ 6</i></div></div>
+            <div class="am"><div class="am-label">회의실</div><div class="am-val"><span id="bookingAvailRoom">1</span><i>/ 2</i></div></div>
+          </div>
+        </section>
+      </main>
+
+      <div class="detail-cta detail-cta-single">
+        <button class="btn-primary" data-to="d-02">
+          다음
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </div>
+  </template>
+
+  <!-- D-04 예약 완료 -->
+  <template id="tpl-d-04">
+    <div class="scr scr-done">
+      <div class="done-hero">
+        <div class="done-orbit"></div>
+        <div class="done-orbit orbit-b"></div>
+        <div class="done-check">
+          <svg viewBox="0 0 60 60" fill="none">
+            <circle cx="30" cy="30" r="28" stroke="currentColor" stroke-width="1"/>
+            <path d="M18 30 L26 38 L42 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="check-path"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="done-body">
+        <h1 class="done-title">예약이 완료되었습니다</h1>
+        <p class="done-sub">충전하는 동안 당신의 시간을 디자인하세요</p>
+
+        <div class="ticket">
+          <div class="ticket-top">
+            <div class="ticket-col">
+              <div class="tk-label">지점</div>
+              <div class="tk-val">세종로 Deep Space</div>
+            </div>
+            <div class="ticket-col ticket-col-right">
+              <div class="tk-label">예약번호</div>
+              <div class="tk-val tk-mono">DS-20260422-0031</div>
+            </div>
+          </div>
+          <div class="ticket-divider">
+            <span class="td-notch td-notch-l"></span>
+            <span class="td-line"></span>
+            <span class="td-notch td-notch-r"></span>
+          </div>
+          <div class="ticket-middle">
+            <div>
+              <div class="tk-label">DATE</div>
+              <div class="tk-val">4월 22일 (수)</div>
+            </div>
+            <div>
+              <div class="tk-label">TIME</div>
+              <div class="tk-val">11:00 – 13:00</div>
+            </div>
+          </div>
+          <div class="ticket-middle">
+            <div>
+              <div class="tk-label">SEAT</div>
+              <div class="tk-val">라운지 A-7</div>
+            </div>
+            <div>
+              <div class="tk-label">CHARGER</div>
+              <div class="tk-val">C-03 · 7 kW</div>
+            </div>
+          </div>
+          <div class="ticket-barcode">
+            <svg width="100%" height="36" viewBox="0 0 280 36" preserveAspectRatio="none">
+              <g fill="rgba(255,255,255,0.85)">
+                <rect x="2" y="0" width="2" height="36"/><rect x="6" y="0" width="1" height="36"/><rect x="9" y="0" width="3" height="36"/><rect x="14" y="0" width="1" height="36"/><rect x="17" y="0" width="2" height="36"/><rect x="21" y="0" width="1" height="36"/><rect x="24" y="0" width="4" height="36"/><rect x="30" y="0" width="1" height="36"/><rect x="33" y="0" width="2" height="36"/><rect x="37" y="0" width="3" height="36"/><rect x="42" y="0" width="1" height="36"/><rect x="45" y="0" width="2" height="36"/><rect x="49" y="0" width="1" height="36"/><rect x="52" y="0" width="3" height="36"/><rect x="57" y="0" width="2" height="36"/><rect x="61" y="0" width="1" height="36"/><rect x="64" y="0" width="2" height="36"/><rect x="68" y="0" width="4" height="36"/><rect x="74" y="0" width="1" height="36"/><rect x="77" y="0" width="2" height="36"/><rect x="81" y="0" width="3" height="36"/><rect x="86" y="0" width="1" height="36"/><rect x="89" y="0" width="2" height="36"/><rect x="93" y="0" width="1" height="36"/><rect x="96" y="0" width="3" height="36"/><rect x="101" y="0" width="1" height="36"/><rect x="104" y="0" width="2" height="36"/><rect x="108" y="0" width="4" height="36"/><rect x="114" y="0" width="1" height="36"/><rect x="117" y="0" width="2" height="36"/><rect x="121" y="0" width="1" height="36"/><rect x="124" y="0" width="3" height="36"/><rect x="129" y="0" width="2" height="36"/><rect x="133" y="0" width="1" height="36"/><rect x="136" y="0" width="2" height="36"/><rect x="140" y="0" width="3" height="36"/><rect x="145" y="0" width="1" height="36"/><rect x="148" y="0" width="4" height="36"/><rect x="154" y="0" width="1" height="36"/><rect x="157" y="0" width="2" height="36"/><rect x="161" y="0" width="3" height="36"/><rect x="166" y="0" width="1" height="36"/><rect x="169" y="0" width="2" height="36"/><rect x="173" y="0" width="1" height="36"/><rect x="176" y="0" width="3" height="36"/><rect x="181" y="0" width="2" height="36"/><rect x="185" y="0" width="1" height="36"/><rect x="188" y="0" width="2" height="36"/><rect x="192" y="0" width="4" height="36"/><rect x="198" y="0" width="1" height="36"/><rect x="201" y="0" width="2" height="36"/><rect x="205" y="0" width="3" height="36"/><rect x="210" y="0" width="1" height="36"/><rect x="213" y="0" width="2" height="36"/><rect x="217" y="0" width="3" height="36"/><rect x="222" y="0" width="1" height="36"/><rect x="225" y="0" width="2" height="36"/><rect x="229" y="0" width="4" height="36"/><rect x="235" y="0" width="1" height="36"/><rect x="238" y="0" width="2" height="36"/><rect x="242" y="0" width="3" height="36"/><rect x="247" y="0" width="1" height="36"/><rect x="250" y="0" width="2" height="36"/><rect x="254" y="0" width="3" height="36"/><rect x="259" y="0" width="1" height="36"/><rect x="262" y="0" width="4" height="36"/><rect x="268" y="0" width="1" height="36"/><rect x="271" y="0" width="2" height="36"/><rect x="275" y="0" width="3" height="36"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="done-predict">
+          <div class="dp-head">
+            <span class="dp-label">충전 예상</span>
+            <span class="dp-val">42% → 85%</span>
+          </div>
+          <div class="dp-bar">
+            <div class="dp-bar-fill" style="width:42%"></div>
+            <div class="dp-bar-add" style="left:42%;width:43%"></div>
+          </div>
+          <div class="dp-foot">퇴실 시 약 <b>85%</b> · 예상 충전량 <b>25.8 kWh</b></div>
+        </div>
+
+        <div class="done-cancel">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          이용 시작 30분 전까지 무료 취소 가능합니다
+        </div>
+      </div>
+
+      <div class="detail-cta">
+        <button class="btn-ghost-lg" data-to="b-01">홈으로</button>
+        <button class="btn-primary" data-to="e-01">
+          길 안내
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        </button>
+      </div>
+    </div>
+  </template>
+
+  <!-- F-01 체크인 -->
+  <template id="tpl-f-01">
+    <div class="scr scr-checkin">
+      <header class="app-header">
+        <button class="icon-btn" data-to="b-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div class="header-title">체크인</div>
+        <div></div>
+      </header>
+
+      <main class="app-body checkin-body">
+        <div class="ci-tabs">
+          <button class="ci-tab is-active" data-checkin-tab="qr">QR 코드</button>
+          <button class="ci-tab" data-checkin-tab="pin">출입번호</button>
+        </div>
+
+        <div class="ci-qr-wrap" id="checkinQrPanel">
+          <div class="ci-qr-frame">
+            <div class="ci-qr-corner c-tl"></div>
+            <div class="ci-qr-corner c-tr"></div>
+            <div class="ci-qr-corner c-bl"></div>
+            <div class="ci-qr-corner c-br"></div>
+            <svg class="ci-qr" viewBox="0 0 21 21" shape-rendering="crispEdges">
+              <rect width="21" height="21" fill="#fff"/>
+              <g fill="#000">
+                <rect x="0" y="0" width="7" height="7"/><rect x="1" y="1" width="5" height="5" fill="#fff"/><rect x="2" y="2" width="3" height="3"/>
+                <rect x="14" y="0" width="7" height="7"/><rect x="15" y="1" width="5" height="5" fill="#fff"/><rect x="16" y="2" width="3" height="3"/>
+                <rect x="0" y="14" width="7" height="7"/><rect x="1" y="15" width="5" height="5" fill="#fff"/><rect x="2" y="16" width="3" height="3"/>
+                <rect x="8" y="0" width="1" height="1"/><rect x="10" y="0" width="1" height="1"/><rect x="12" y="0" width="1" height="1"/>
+                <rect x="9" y="2" width="1" height="1"/><rect x="11" y="2" width="1" height="1"/>
+                <rect x="8" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="12" y="3" width="1" height="1"/>
+                <rect x="8" y="5" width="1" height="1"/><rect x="11" y="5" width="1" height="1"/>
+                <rect x="8" y="8" width="1" height="1"/><rect x="10" y="8" width="1" height="1"/><rect x="13" y="8" width="1" height="1"/><rect x="15" y="8" width="1" height="1"/><rect x="17" y="8" width="1" height="1"/><rect x="19" y="8" width="1" height="1"/>
+                <rect x="9" y="9" width="1" height="1"/><rect x="11" y="9" width="1" height="1"/><rect x="14" y="9" width="1" height="1"/><rect x="16" y="9" width="1" height="1"/><rect x="18" y="9" width="1" height="1"/><rect x="20" y="9" width="1" height="1"/>
+                <rect x="8" y="10" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="15" y="10" width="1" height="1"/><rect x="17" y="10" width="1" height="1"/><rect x="19" y="10" width="1" height="1"/>
+                <rect x="9" y="11" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/><rect x="13" y="11" width="1" height="1"/><rect x="16" y="11" width="1" height="1"/><rect x="18" y="11" width="1" height="1"/><rect x="20" y="11" width="1" height="1"/>
+                <rect x="8" y="12" width="1" height="1"/><rect x="10" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/><rect x="15" y="12" width="1" height="1"/><rect x="17" y="12" width="1" height="1"/><rect x="19" y="12" width="1" height="1"/>
+                <rect x="8" y="14" width="1" height="1"/><rect x="10" y="14" width="1" height="1"/><rect x="13" y="14" width="1" height="1"/><rect x="15" y="14" width="1" height="1"/><rect x="17" y="14" width="1" height="1"/><rect x="19" y="14" width="1" height="1"/>
+                <rect x="9" y="15" width="1" height="1"/><rect x="11" y="15" width="1" height="1"/><rect x="14" y="15" width="1" height="1"/><rect x="16" y="15" width="1" height="1"/><rect x="18" y="15" width="1" height="1"/><rect x="20" y="15" width="1" height="1"/>
+                <rect x="8" y="16" width="1" height="1"/><rect x="10" y="16" width="1" height="1"/><rect x="12" y="16" width="1" height="1"/><rect x="15" y="16" width="1" height="1"/><rect x="17" y="16" width="1" height="1"/><rect x="19" y="16" width="1" height="1"/>
+                <rect x="9" y="17" width="1" height="1"/><rect x="11" y="17" width="1" height="1"/><rect x="13" y="17" width="1" height="1"/><rect x="16" y="17" width="1" height="1"/><rect x="18" y="17" width="1" height="1"/><rect x="20" y="17" width="1" height="1"/>
+                <rect x="8" y="18" width="1" height="1"/><rect x="10" y="18" width="1" height="1"/><rect x="12" y="18" width="1" height="1"/><rect x="15" y="18" width="1" height="1"/><rect x="17" y="18" width="1" height="1"/><rect x="19" y="18" width="1" height="1"/>
+                <rect x="9" y="19" width="1" height="1"/><rect x="11" y="19" width="1" height="1"/><rect x="14" y="19" width="1" height="1"/><rect x="16" y="19" width="1" height="1"/><rect x="18" y="19" width="1" height="1"/><rect x="20" y="19" width="1" height="1"/>
+              </g>
+              <circle cx="10.5" cy="10.5" r="2.3" fill="#fff"/>
+              <circle cx="10.5" cy="10.5" r="1.2" fill="#000"/>
+            </svg>
+          </div>
+          <div class="ci-instr">
+            <div class="ci-instr-title">DS 출입문 리더기에 스캔하세요</div>
+            <div class="ci-timer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>유효 <b id="ciTimer">00:58</b></span>
+            </div>
+          </div>
+
+          <div class="ci-booking">
+            <div class="ci-booking__row"><span class="ci-booking__label">예약</span><span class="ci-booking__value">세종로 DS · A-7 · C-03</span></div>
+            <div class="ci-booking__row"><span class="ci-booking__label">시간</span><span class="ci-booking__value">11:00 – 13:00</span></div>
+          </div>
+
+          <button class="ci-simulate" data-to="f-02">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            체크인 시뮬레이션
+          </button>
+        </div>
+
+        <div class="ci-pin-wrap is-hidden" id="checkinPinPanel">
+          <div class="pin-hero">
+            <div class="pin-eyebrow">ENTRY CODE</div>
+            <div class="pin-code">7294</div>
+            <div class="pin-note">출입문 키패드에 아래 번호를 입력해주세요</div>
+          </div>
+
+          <div class="ci-booking">
+            <div class="ci-booking__row"><span class="ci-booking__label">유효시간</span><span class="ci-booking__value">05분</span></div>
+            <div class="ci-booking__row"><span class="ci-booking__label">차량번호 백업</span><span class="ci-booking__value">뒤 4자리 3456</span></div>
+          </div>
+
+          <button class="ci-simulate" data-to="f-02">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            출입번호 체크인 완료
+          </button>
+        </div>
+      </main>
+    </div>
+  </template>
+
+  <!-- F-03 이용 현황 -->
+  <template id="tpl-f-03">
+    <div class="scr scr-use">
+      <header class="app-header">
+        <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="use-status">
+          <span class="use-dot"></span>
+          <span>이용 중 · 세종로 DS</span>
+        </div>
+        <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></button>
+      </header>
+
+      <main class="app-body use-body">
+        <section class="charge-card" data-to="f-04">
+          <div class="charge-top">
+            <div class="ct-left">
+              <div class="ct-eyebrow">CHARGING</div>
+              <div class="ct-sub">충전기 <b>C-03</b> · 7 kW</div>
+            </div>
+            <div class="ct-live"><span class="live-dot"></span>LIVE</div>
+          </div>
+
+          <div class="charge-ring-wrap">
+            <svg class="charge-ring" viewBox="0 0 200 200">
+              <defs>
+                <linearGradient id="ringG" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#5EC5FF"/>
+                  <stop offset="100%" stop-color="#E8B84A"/>
+                </linearGradient>
+                <filter id="ringGlow"><feGaussianBlur stdDeviation="2"/></filter>
+              </defs>
+              <circle cx="100" cy="100" r="85" stroke="rgba(255,255,255,0.05)" stroke-width="10" fill="none"/>
+              <circle cx="100" cy="100" r="85" stroke="url(#ringG)" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="534" stroke-dashoffset="193" transform="rotate(-90 100 100)" class="ring-path"/>
+              <circle cx="100" cy="100" r="85" stroke="url(#ringG)" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="534" stroke-dashoffset="193" transform="rotate(-90 100 100)" opacity="0.35" filter="url(#ringGlow)"/>
+            </svg>
+            <div class="charge-center">
+              <div class="cc-label">현재 배터리</div>
+              <div class="cc-val"><span id="chgPct">67</span><i>%</i></div>
+              <div class="cc-sub">시작 42% · 목표 85%</div>
+            </div>
+          </div>
+
+          <div class="charge-stats">
+            <div class="cs"><div class="cs-label">충전량</div><div class="cs-val">15.2<i>kWh</i></div></div>
+            <div class="cs cs-divider"></div>
+            <div class="cs"><div class="cs-label">속도</div><div class="cs-val">7.0<i>kW</i></div></div>
+            <div class="cs cs-divider"></div>
+            <div class="cs"><div class="cs-label">완료</div><div class="cs-val">12:48<i></i></div></div>
+          </div>
+        </section>
+
+        <section class="seat-card">
+          <div class="seat-row">
+            <div>
+              <div class="seat-eyebrow">SEAT · LOUNGE</div>
+              <div class="seat-name">A-7</div>
+            </div>
+            <div class="seat-countdown">
+              <div class="sc-label">남은 이용 시간</div>
+              <div class="sc-val"><b id="seatHH">01</b>:<b id="seatMM">18</b>:<b id="seatSS">42</b></div>
+            </div>
+          </div>
+          <div class="seat-bar">
+            <div class="seat-bar-fill" style="width:40%"></div>
+          </div>
+          <div class="seat-foot">
+            <span>11:00 시작</span>
+            <span>13:00 종료</span>
+          </div>
+          <div class="seat-actions">
+            <button class="btn-outline-sm" data-sheet="extend">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              시간 연장
+            </button>
+            <button class="btn-outline-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+              음료 주문
+            </button>
+            <button class="btn-outline-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+              회의실 추가
+            </button>
+          </div>
+        </section>
+
+        <section class="wifi-card">
+          <div class="wifi-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          </div>
+          <div class="wifi-body">
+            <div class="wf-label">Wi-Fi 접속 정보</div>
+            <div class="wf-ssid">DS_SEJONGRO_5G</div>
+            <div class="wf-pw">비밀번호: <span class="mono">deep2026!</span></div>
+          </div>
+          <button class="wifi-copy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </section>
+
+        <div class="end-btn-wrap">
+          <button class="btn-ghost-lg btn-end" data-to="g-01">이용 종료</button>
+        </div>
+      </main>
+
+      <nav class="tabbar" data-tabbar>
+        <button class="tab" data-to="b-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>홈</span></button>
+        <button class="tab is-active" data-to="f-03"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>이용현황</span></button>
+        <button class="tab" data-to="c-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>예약</span></button>
+        <button class="tab" data-to="h-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>마이</span></button>
+      </nav>
+    </div>
+  </template>
+
+  <!-- F-04 충전 상세 -->
+  <template id="tpl-f-04">
+    <div class="scr scr-charge">
+      <header class="app-header">
+        <button class="icon-btn" data-to="f-03"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">충전 상세</div>
+        <div></div>
+      </header>
+
+      <main class="app-body charge-detail-body">
+        <div class="charge-big">
+          <svg class="charge-big-ring" viewBox="0 0 280 280">
+            <defs>
+              <linearGradient id="bigG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#5EC5FF"/>
+                <stop offset="100%" stop-color="#E8B84A"/>
+              </linearGradient>
+            </defs>
+            <circle cx="140" cy="140" r="120" stroke="rgba(255,255,255,0.04)" stroke-width="2"/>
+            <circle cx="140" cy="140" r="110" stroke="rgba(255,255,255,0.06)" stroke-width="12" fill="none"/>
+            <circle cx="140" cy="140" r="110" stroke="url(#bigG)" stroke-width="12" fill="none" stroke-linecap="round" stroke-dasharray="691" stroke-dashoffset="228" transform="rotate(-90 140 140)"/>
+            <g stroke="rgba(255,255,255,0.12)" stroke-width="1">
+              <line x1="140" y1="14" x2="140" y2="22"/>
+              <line x1="140" y1="258" x2="140" y2="266"/>
+              <line x1="14" y1="140" x2="22" y2="140"/>
+              <line x1="258" y1="140" x2="266" y2="140"/>
+            </g>
+          </svg>
+          <div class="charge-big-center">
+            <div class="cb-label">CURRENT</div>
+            <div class="cb-val">67<i>%</i></div>
+            <div class="cb-meta">
+              <span>42%</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              <span class="hl">85%</span>
+            </div>
+          </div>
+          <div class="charge-orbit">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+          </div>
+        </div>
+
+        <div class="cd-grid">
+          <div class="cd-tile"><div class="cd-label">시작 시간</div><div class="cd-val">11:02</div></div>
+          <div class="cd-tile"><div class="cd-label">예상 완료</div><div class="cd-val">12:48</div></div>
+          <div class="cd-tile"><div class="cd-label">누적 충전</div><div class="cd-val">15.2<i>kWh</i></div></div>
+          <div class="cd-tile"><div class="cd-label">충전 속도</div><div class="cd-val">7.0<i>kW</i></div></div>
+          <div class="cd-tile cd-wide">
+            <div class="cd-label">예상 비용</div>
+            <div class="cd-val"><b>2,586</b><i>원</i></div>
+            <div class="cd-meta">170원/kWh · 실비 정산</div>
+          </div>
+        </div>
+
+        <div class="cd-timeline">
+          <div class="cd-tl-head">충전 그래프</div>
+          <svg viewBox="0 0 320 100" class="cd-graph" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="areaG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="rgba(94,197,255,0.4)"/>
+                <stop offset="100%" stop-color="rgba(94,197,255,0)"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,80 L40,75 L80,65 L120,55 L160,48 L200,38 L240,28 L280,20 L320,14 L320,100 L0,100 Z" fill="url(#areaG)"/>
+            <path d="M0,80 L40,75 L80,65 L120,55 L160,48 L200,38 L240,28 L280,20 L320,14" stroke="#5EC5FF" stroke-width="1.5" fill="none"/>
+            <circle cx="160" cy="48" r="4" fill="#fff"/>
+            <circle cx="160" cy="48" r="7" stroke="#5EC5FF" stroke-width="1" fill="none"/>
+          </svg>
+          <div class="cd-tl-foot">
+            <span>11:02</span>
+            <span>현재 12:04</span>
+            <span>12:48</span>
+          </div>
+        </div>
+
+        <button class="btn-danger-outline">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+          충전 중지
+        </button>
+      </main>
+    </div>
+  </template>
+
+  <!-- G-02 정산 완료 -->
+  <template id="tpl-g-02">
+    <div class="scr scr-settle">
+      <header class="app-header app-header-glass">
+        <div></div>
+        <div class="header-title">이용 완료</div>
+        <button class="icon-btn" data-to="b-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </header>
+
+      <main class="app-body settle-body">
+        <section class="settle-hero">
+          <div class="settle-halo"></div>
+          <div class="settle-planet">
+            <svg viewBox="0 0 120 120">
+              <defs>
+                <radialGradient id="planetG" cx="35%" cy="35%">
+                  <stop offset="0%" stop-color="#F5D27A"/>
+                  <stop offset="60%" stop-color="#E8B84A"/>
+                  <stop offset="100%" stop-color="#8A6922"/>
+                </radialGradient>
+              </defs>
+              <circle cx="60" cy="60" r="40" fill="url(#planetG)"/>
+              <ellipse cx="60" cy="60" rx="55" ry="8" stroke="rgba(232,184,74,0.6)" stroke-width="1.4" fill="none"/>
+              <ellipse cx="60" cy="60" rx="55" ry="8" stroke="rgba(232,184,74,0.3)" stroke-width="1.4" fill="none" transform="rotate(15 60 60)"/>
+            </svg>
+          </div>
+          <h1 class="settle-title">오늘도 시간을<br/>디자인했어요</h1>
+          <p class="settle-sub">총 2시간 · 충전 42% → 85% · 절약 시간 42분</p>
+        </section>
+
+        <section class="rcpt">
+          <div class="rcpt-head">
+            <div class="rcpt-eyebrow">RECEIPT</div>
+            <div class="rcpt-num">DS-20260422-0031</div>
+          </div>
+          <div class="rcpt-rows">
+            <div class="rcpt-row">
+              <span class="rr-label">라운지 좌석 <i>2시간</i></span>
+              <span class="rr-val">4,000</span>
+            </div>
+            <div class="rcpt-row">
+              <span class="rr-label">충전 <i>7 kW · 32.4 kWh</i></span>
+              <span class="rr-val">3,240</span>
+            </div>
+            <div class="rcpt-row">
+              <span class="rr-label">아메리카노 1잔</span>
+              <span class="rr-val">4,500</span>
+            </div>
+          </div>
+          <div class="rcpt-sum">
+            <span>합계</span>
+            <span class="rcpt-total"><b>11,740</b><i>원</i></span>
+          </div>
+          <div class="rcpt-pay">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            <span>카카오페이</span>
+            <span class="rp-dot">·</span>
+            <span>13:02 결제 완료</span>
+          </div>
+        </section>
+
+        <section class="rate-card">
+          <div class="rate-head">오늘 이용은 어떠셨나요?</div>
+          <div class="rate-stars">
+            <span class="star is-on">★</span>
+            <span class="star is-on">★</span>
+            <span class="star is-on">★</span>
+            <span class="star is-on">★</span>
+            <span class="star is-on">★</span>
+          </div>
+          <div class="rate-foot">탭하여 평가를 남겨주세요</div>
+        </section>
+      </main>
+
+      <div class="detail-cta">
+        <button class="btn-ghost-lg" data-to="g-03">영수증</button>
+        <button class="btn-primary" data-to="b-01">완료</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- H-01 마이페이지 -->
+  <template id="tpl-h-01">
+    <div class="scr scr-my">
+      <header class="app-header">
+        <div></div>
+        <div class="header-title">마이페이지</div>
+        <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+      </header>
+
+      <main class="app-body my-body">
+        <section class="my-profile">
+          <div class="mp-avatar"><span>J</span></div>
+          <div class="mp-info">
+            <div class="mp-name">김지민</div>
+            <div class="mp-email">jimin.kim@deep.space</div>
+          </div>
+          <button class="mp-edit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </section>
+
+        <section class="my-stats">
+          <div class="ms"><div class="ms-val">24</div><div class="ms-label">이용 횟수</div></div>
+          <div class="ms-div"></div>
+          <div class="ms"><div class="ms-val">38h</div><div class="ms-label">디자인한 시간</div></div>
+          <div class="ms-div"></div>
+          <div class="ms"><div class="ms-val">412<i>kWh</i></div><div class="ms-label">누적 충전</div></div>
+        </section>
+
+        <section class="my-vehicle">
+          <div class="mv-head">
+            <div class="mv-eyebrow">MY VEHICLE</div>
+            <button class="mv-link">관리 ›</button>
+          </div>
+          <div class="mv-body">
+            <svg class="mv-illus" viewBox="0 0 120 50" fill="none">
+              <path d="M10 35 Q15 24 30 22 L90 22 Q105 24 110 35" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="rgba(255,255,255,0.03)"/>
+              <circle cx="30" cy="38" r="5" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+              <circle cx="90" cy="38" r="5" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+            </svg>
+            <div>
+              <div class="mv-model">Tesla Model 3</div>
+              <div class="mv-plate">12가 3456 · 2024년형</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="my-menu">
+          <button class="mm" data-to="h-02">
+            <svg class="mm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="mm-label">예약 내역</span>
+            <span class="mm-meta">24</span>
+            <svg class="mm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button class="mm" data-to="h-03">
+            <svg class="mm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            <span class="mm-label">결제 내역</span>
+            <svg class="mm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button class="mm" data-sheet="notice">
+            <svg class="mm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span class="mm-label">공지사항</span>
+            <span class="mm-meta mm-new">NEW</span>
+            <svg class="mm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button class="mm" data-sheet="inquiry">
+            <svg class="mm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="mm-label">1:1 문의</span>
+            <svg class="mm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button class="mm">
+            <svg class="mm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span class="mm-label">이용약관 · 정책</span>
+            <svg class="mm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </section>
+
+        <button class="logout-btn">로그아웃</button>
+      </main>
+
+      <nav class="tabbar" data-tabbar>
+        <button class="tab" data-to="b-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>홈</span></button>
+        <button class="tab" data-to="f-03"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>이용현황</span></button>
+        <button class="tab" data-to="c-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>예약</span></button>
+        <button class="tab is-active" data-to="h-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>마이</span></button>
+      </nav>
+    </div>
+  </template>
+
+  <!-- A-03 본인인증 -->
+  <template id="tpl-a-03">
+    <div class="scr scr-form">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="a-02"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">회원가입</div>
+        <div class="header-step">1 / 3</div>
+      </header>
+
+      <main class="app-body form-body">
+        <section class="hero-copy hero-copy-tight">
+          <div class="hero-eyebrow">IDENTITY</div>
+          <h1 class="hero-title">본인 확인 후<br/>3분 안에 시작됩니다</h1>
+          <p class="hero-sub">입차 체크인과 예약 보호를 위해 기본 정보만 확인합니다.</p>
+        </section>
+
+        <div class="progress-steps">
+          <span class="is-on"></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <section class="form-card-stack">
+          <div class="form-card">
+            <label class="field">
+              <span class="field-label">이름</span>
+              <div class="text-input">김지민</div>
+            </label>
+            <label class="field">
+              <span class="field-label">휴대폰 번호</span>
+              <div class="field-inline">
+                <div class="text-input">010-2345-6789</div>
+                <button class="btn-inline">인증요청</button>
+              </div>
+            </label>
+            <label class="field">
+              <span class="field-label">인증번호</span>
+              <div class="field-inline">
+                <div class="text-input">123456</div>
+                <div class="inline-badge warn">02:41</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="form-card">
+            <div class="field-label">동의 항목</div>
+            <button class="consent-row is-on"><span class="consent-check">✓</span><span>[필수] 서비스 이용약관</span></button>
+            <button class="consent-row is-on"><span class="consent-check">✓</span><span>[필수] 개인정보 처리방침</span></button>
+            <button class="consent-row"><span class="consent-check"></span><span>[선택] 마케팅 정보 수신</span></button>
+          </div>
+        </section>
+      </main>
+
+      <div class="detail-cta detail-cta-single">
+        <button class="btn-primary" data-to="a-04">다음</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- A-04 차량 등록 -->
+  <template id="tpl-a-04">
+    <div class="scr scr-form">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="a-03"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">차량 등록</div>
+        <div class="header-step">2 / 3</div>
+      </header>
+
+      <main class="app-body form-body">
+        <section class="hero-copy hero-copy-tight">
+          <div class="hero-eyebrow">VEHICLE</div>
+          <h1 class="hero-title">충전 예측과 자동 체크인을<br/>위해 차량을 연결합니다</h1>
+        </section>
+
+        <div class="progress-steps">
+          <span class="is-on"></span>
+          <span class="is-on"></span>
+          <span></span>
+        </div>
+
+        <section class="form-card-stack">
+          <div class="form-card">
+            <label class="field">
+              <span class="field-label">차량번호</span>
+              <div class="text-input">12가 3456</div>
+            </label>
+            <label class="field">
+              <span class="field-label">제조사</span>
+              <div class="text-input">Tesla</div>
+            </label>
+            <label class="field">
+              <span class="field-label">차종</span>
+              <div class="text-input">Model 3 Long Range</div>
+            </label>
+            <label class="field">
+              <span class="field-label">연식</span>
+              <div class="text-input">2025</div>
+            </label>
+          </div>
+
+          <div class="insight-card">
+            <div class="ic-label">배터리 용량</div>
+            <div class="ic-value">82 <i>kWh</i></div>
+            <div class="ic-foot">선택한 모델 기준으로 충전 종료 예측이 자동 계산됩니다.</div>
+          </div>
+        </section>
+      </main>
+
+      <div class="detail-cta detail-cta-dual">
+        <button class="btn-ghost-lg" data-to="a-05">나중에 등록</button>
+        <button class="btn-primary" data-to="a-05">다음</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- A-05 가입 완료 -->
+  <template id="tpl-a-05">
+    <div class="scr scr-form">
+      <main class="app-body welcome-body">
+        <div class="progress-steps progress-steps-top">
+          <span class="is-on"></span>
+          <span class="is-on"></span>
+          <span class="is-on"></span>
+        </div>
+
+        <section class="welcome-hero">
+          <div class="welcome-mark">✦</div>
+          <div class="hero-eyebrow">WELCOME</div>
+          <h1 class="hero-title">환영합니다!<br/>이제 충전하면서 일할 시간입니다</h1>
+          <p class="hero-sub">지오펜스 알림과 체크인 준비를 켜두면 실제 방문 경험이 훨씬 부드러워집니다.</p>
+        </section>
+
+        <section class="form-card-stack">
+          <button class="permission-card">
+            <div class="permission-copy">
+              <div class="permission-title">푸시 알림 허용</div>
+              <div class="permission-sub">예약 확정, 도착 안내, 종료 10분 전 알림</div>
+            </div>
+            <span class="permission-pill">권장</span>
+          </button>
+          <button class="permission-card">
+            <div class="permission-copy">
+              <div class="permission-title">위치 서비스 허용</div>
+              <div class="permission-sub">반경 500m 접근 시 체크인 준비 화면으로 바로 이동</div>
+            </div>
+            <span class="permission-pill">권장</span>
+          </button>
+        </section>
+      </main>
+
+      <div class="detail-cta detail-cta-single">
+        <button class="btn-primary" data-to="b-01">시작하기</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- B-02 알림함 -->
+  <template id="tpl-b-02">
+    <div class="scr scr-list">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="b-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">알림함</div>
+        <button class="text-link">모두 읽음</button>
+      </header>
+
+      <main class="app-body list-body">
+        <div class="section-head">
+          <div class="section-title">최근 알림</div>
+          <span class="section-hint">오늘 4건</span>
+        </div>
+        <section class="notify-list">
+          <button class="notify-card is-new" data-to="d-04">
+            <div class="notify-icon">📅</div>
+            <div class="notify-copy">
+              <div class="notify-title">예약이 확정되었습니다</div>
+              <div class="notify-body">4/22(수) 11:00–13:00 · 세종로 DS · A-7 · C-03</div>
+            </div>
+            <div class="notify-time">방금 전</div>
+          </button>
+          <button class="notify-card" data-to="f-03">
+            <div class="notify-icon">⚡</div>
+            <div class="notify-copy">
+              <div class="notify-title">충전이 67%까지 진행됐습니다</div>
+              <div class="notify-body">예상 완료 12:48 · 이용 종료 10분 전 자동 알림 예정</div>
+            </div>
+            <div class="notify-time">12분 전</div>
+          </button>
+          <button class="notify-card" data-to="g-02">
+            <div class="notify-icon">🧾</div>
+            <div class="notify-copy">
+              <div class="notify-title">정산이 완료되었습니다</div>
+              <div class="notify-body">총 11,740원 · 영수증이 저장되었습니다</div>
+            </div>
+            <div class="notify-time">어제</div>
+          </button>
+          <button class="notify-card">
+            <div class="notify-icon">📢</div>
+            <div class="notify-copy">
+              <div class="notify-title">세종로 지점 출입 동선 변경 안내</div>
+              <div class="notify-body">4월 30일 점검으로 B4 C게이트를 이용해주세요</div>
+            </div>
+            <div class="notify-time">어제</div>
+          </button>
+        </section>
+      </main>
+    </div>
+  </template>
+
+  <!-- C-03 지점 검색 텍스트 -->
+  <template id="tpl-c-03">
+    <div class="scr scr-list">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="c-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">지점 검색</div>
+        <button class="text-link" data-to="c-01">취소</button>
+      </header>
+
+      <main class="app-body list-body">
+        <div class="search-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>세종로</span>
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-title">최근 검색</div>
+            <span class="section-hint">전체 삭제</span>
+          </div>
+          <div class="chip-row">
+            <button class="chip">세종로</button>
+            <button class="chip">코엑스</button>
+            <button class="chip">판교</button>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title">검색 결과</div>
+          <div class="history-list">
+            <button class="history-card" data-to="c-02">
+              <div>
+                <div class="history-title"><b>세종로</b> Deep Space</div>
+                <div class="history-meta">세종로공영주차장 B4 · C423 · 도보 6분</div>
+              </div>
+              <div class="history-side">4석</div>
+            </button>
+            <button class="history-card" data-to="c-02">
+              <div>
+                <div class="history-title"><b>세종로</b> 비즈 라운지</div>
+                <div class="history-meta">종로구 새문안로 2길 · 충전기 2대 가능</div>
+              </div>
+              <div class="history-side">혼잡</div>
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
+  </template>
+
+  <!-- D-02 공간/충전기 선택 -->
+  <template id="tpl-d-02">
+    <div class="scr scr-pick">
+      <header class="app-header">
+        <button class="icon-btn" data-to="d-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">공간 선택</div>
+        <div class="header-step">2 / 3</div>
+      </header>
+
+      <main class="app-body list-body">
+        <section class="pick-spot">
+          <div class="ps-eyebrow">선택 시간</div>
+          <div class="ps-name">4월 22일 (수) · 11:00 – 13:00</div>
+          <div class="ps-addr">세종로 Deep Space</div>
+        </section>
+
+        <section class="section-tight">
+          <div class="section-head">
+            <div class="section-title">라운지 좌석</div>
+            <button class="text-link" data-sheet="seatmap">배치도 보기</button>
+          </div>
+          <div class="option-list">
+            <button class="option-tile is-selected" data-seat-select="A-7">
+              <div>
+                <div class="option-title">라운지 A-7</div>
+                <div class="option-sub">창측 포커스 데스크 · 전원 · 모니터 독</div>
+              </div>
+              <div class="option-side">4,000원</div>
+            </button>
+            <button class="option-tile" data-seat-select="AUTO">
+              <div>
+                <div class="option-title">자동 배정</div>
+                <div class="option-sub">동선이 가장 좋은 좌석으로 자동 선택</div>
+              </div>
+              <div class="option-side">추천</div>
+            </button>
+          </div>
+        </section>
+
+        <section class="section-tight">
+          <div class="section-title">회의실 선택</div>
+          <div class="option-list">
+            <button class="option-tile" data-meeting-select="4인">
+              <div>
+                <div class="option-title">4인 회의실</div>
+                <div class="option-sub">11:30부터 예약 가능 · 화상회의 장비 포함</div>
+              </div>
+              <div class="option-side">8,000원</div>
+            </button>
+            <button class="option-tile is-disabled">
+              <div>
+                <div class="option-title">8인 회의실</div>
+                <div class="option-sub">현재 사용 중 · 13:00 이후 가능</div>
+              </div>
+              <div class="option-side">만석</div>
+            </button>
+          </div>
+        </section>
+
+        <section class="section-tight">
+          <div class="section-title">충전기 선택</div>
+          <div class="choice-row">
+            <button class="pill-choice is-on" data-charger-select="C-03">C-03</button>
+            <button class="pill-choice" data-charger-select="C-04">C-04</button>
+            <button class="pill-choice" data-charger-select="C-06">C-06</button>
+            <button class="pill-choice pill-choice-muted" data-charger-select="없음">충전 없이 라운지만</button>
+          </div>
+        </section>
+
+        <section class="summary-card">
+          <div class="summary-row">
+            <span>선택 요약</span>
+            <b id="bookingSelectionSummary">좌석 A-7 · 충전기 C-03</b>
+          </div>
+          <div class="summary-foot">충전 42% → 종료 시 약 85% 예상</div>
+        </section>
+      </main>
+
+      <div class="detail-cta detail-cta-single">
+        <button class="btn-primary" data-to="d-03">다음</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- D-03 결제 -->
+  <template id="tpl-d-03">
+    <div class="scr scr-pick">
+      <header class="app-header">
+        <button class="icon-btn" data-to="d-02"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">결제</div>
+        <div class="header-step">3 / 3</div>
+      </header>
+
+      <main class="app-body list-body">
+        <section class="summary-card">
+          <div class="summary-title">예약 요약</div>
+          <div class="summary-grid">
+            <div><span>지점</span><b>세종로 Deep Space</b></div>
+            <div><span>일정</span><b>4/22 11:00–13:00</b></div>
+            <div><span>공간</span><b>라운지 A-7</b></div>
+            <div><span>충전</span><b>C-03 · 7 kW</b></div>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <div class="section-title">결제 수단</div>
+          <div class="option-list">
+            <button class="payment-method is-selected" data-payment-select="카카오페이"><span>카카오페이</span><b>기본</b></button>
+            <button class="payment-method" data-payment-select="Apple Pay"><span>Apple Pay</span><b>변경</b></button>
+            <button class="payment-method" data-payment-select="신용카드"><span>신용카드</span><b>등록</b></button>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <div class="section-title">예상 금액</div>
+          <div class="price-list">
+            <div class="price-row"><span>라운지 좌석</span><b>4,000원</b></div>
+            <div class="price-row"><span>회의실</span><b>0원</b></div>
+            <div class="price-row"><span>충전 실비</span><b>퇴실 후 정산</b></div>
+          </div>
+          <div class="coupon-card">쿠폰/할인코드 · 2차 오픈 예정</div>
+        </section>
+      </main>
+
+      <div class="detail-cta detail-cta-single">
+        <button class="btn-primary" data-to="d-04">결제하고 예약</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- D-05 예약 상세 -->
+  <template id="tpl-d-05">
+    <div class="scr scr-list">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="e-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">예약 상세</div>
+        <span class="status-chip status-chip-ok">확정</span>
+      </header>
+
+      <main class="app-body list-body">
+        <section class="arrival-card">
+          <div class="arrival-eyebrow">GEOFENCE PUSH</div>
+          <div class="arrival-title">거의 다 왔어요!</div>
+          <div class="arrival-sub">세종로공영주차장 지하 4층 C423 구역으로 진입해주세요.</div>
+          <div class="arrival-meta">도착 예상 배터리 38% · 지금 충전을 시작하면 퇴실 시 약 85%</div>
+        </section>
+
+        <section class="summary-card">
+          <div class="summary-title">세종로 Deep Space</div>
+          <div class="summary-grid">
+            <div><span>예약번호</span><b>DS-20260422-0031</b></div>
+            <div><span>일시</span><b>4/22 11:00–13:00</b></div>
+            <div><span>좌석</span><b>라운지 A-7</b></div>
+            <div><span>충전기</span><b>C-03</b></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title">주차장 내 위치</div>
+          <div class="mini-map">
+            <svg viewBox="0 0 320 140" preserveAspectRatio="xMidYMid meet">
+              <rect x="20" y="20" width="280" height="100" rx="6" stroke="rgba(255,255,255,0.25)" stroke-width="1" fill="rgba(255,255,255,0.02)"/>
+              <rect x="180" y="50" width="60" height="50" stroke="#5EC5FF" stroke-width="1.4" fill="rgba(94,197,255,0.1)"/>
+              <text x="210" y="78" fill="#5EC5FF" font-size="10" font-family="JetBrains Mono" text-anchor="middle">DS</text>
+              <text x="210" y="92" fill="#5EC5FF" font-size="7" text-anchor="middle">C423</text>
+            </svg>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <div class="price-row"><span>무료 취소 가능</span><b>10:30까지</b></div>
+          <div class="price-row"><span>문의</span><b>운영팀 채팅</b></div>
+        </section>
+      </main>
+
+      <div class="detail-cta detail-cta-triple">
+        <button class="btn-ghost-lg" data-sheet="cancel">취소</button>
+        <button class="btn-ghost-lg" data-to="e-01">길 안내</button>
+        <button class="btn-primary" data-to="f-01">체크인</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- E-01 길 안내 -->
+  <template id="tpl-e-01">
+    <div class="scr scr-route">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="d-04"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">길 안내</div>
+        <button class="text-link" data-sheet="nav">앱 선택</button>
+      </header>
+
+      <main class="app-body list-body">
+        <section class="route-hero">
+          <div class="route-map" id="routeMap">
+            <svg viewBox="0 0 340 240" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id="routeBg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#08101C"/>
+                  <stop offset="100%" stop-color="#15223A"/>
+                </linearGradient>
+              </defs>
+              <rect width="340" height="240" fill="url(#routeBg)"/>
+              <path d="M40 180 C70 120 130 100 170 110 S250 150 300 70" fill="none" stroke="rgba(94,197,255,0.25)" stroke-width="12" stroke-linecap="round"/>
+              <path d="M40 180 C70 120 130 100 170 110 S250 150 300 70" fill="none" stroke="#5EC5FF" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 10"/>
+              <circle cx="40" cy="180" r="10" fill="#fff" id="routeCarOuter"/>
+              <circle cx="40" cy="180" r="6" fill="#5EC5FF" id="routeCar"/>
+              <circle cx="300" cy="70" r="12" fill="#E8B84A"/>
+              <circle cx="300" cy="70" r="24" fill="rgba(232,184,74,0.18)"/>
+            </svg>
+            <div class="route-progress-card" id="routeProgressCard">
+              <div class="rpc-head">
+                <span class="rpc-label">DRIVE STATUS</span>
+                <span class="rpc-badge" id="routeBadge">READY</span>
+              </div>
+              <div class="rpc-title" id="routeStatusTitle">아직 운전 시작 전입니다</div>
+              <div class="rpc-sub" id="routeStatusSub">내비를 실행한 뒤 운전 시작을 누르면 반경 진입 Push가 자동 시뮬레이션됩니다.</div>
+              <div class="rpc-track">
+                <div class="rpc-fill" id="routeProgressFill" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="route-copy">
+            <div class="route-title">세종로 Deep Space</div>
+            <div class="route-sub">세종로공영주차장 입구 · 지하 4층 C423</div>
+          </div>
+        </section>
+
+        <section class="route-stats">
+          <div class="route-stat"><span>남은 거리</span><b id="routeDistance">3.8 km</b></div>
+          <div class="route-stat"><span>남은 시간</span><b id="routeEta">14분</b></div>
+          <div class="route-stat"><span>도착 배터리</span><b id="routeBattery">38%</b></div>
+        </section>
+
+        <section class="insight-card">
+          <div class="ic-label">도착 후 충전 예측</div>
+          <div class="ic-value"><span id="routeStartBattery">42%</span> → 85%</div>
+          <div class="ic-foot" id="routeInsight">지금 출발하면 퇴실 시 약 85%까지 충전됩니다.</div>
+        </section>
+      </main>
+
+      <div class="detail-cta detail-cta-dual">
+        <button class="btn-ghost-lg" data-sheet="nav">내비 앱 선택</button>
+        <button class="btn-primary" data-drive-toggle id="routeActionBtn">운전 시작</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- F-02 체크인 완료 -->
+  <template id="tpl-f-02">
+    <div class="scr scr-form">
+      <main class="app-body welcome-body">
+        <section class="welcome-hero welcome-hero-compact">
+          <div class="welcome-mark welcome-mark-ok">✓</div>
+          <div class="hero-eyebrow">CHECK-IN COMPLETE</div>
+          <h1 class="hero-title">환영합니다!<br/>충전이 시작되었습니다</h1>
+          <p class="hero-sub">좌석 A-7과 충전기 C-03이 연결됐습니다.</p>
+        </section>
+
+        <section class="form-card-stack">
+          <div class="summary-card">
+            <div class="summary-grid">
+              <div><span>체크인 시간</span><b>11:02</b></div>
+              <div><span>이용 종료</span><b>13:00</b></div>
+              <div><span>좌석</span><b>라운지 A-7</b></div>
+              <div><span>충전기</span><b>C-03 연결됨</b></div>
+            </div>
+          </div>
+
+          <div class="wifi-card">
+            <div class="wifi-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+            </div>
+            <div class="wifi-body">
+              <div class="wf-label">Wi-Fi 정보</div>
+              <div class="wf-ssid">DS_SEJONGRO_5G</div>
+              <div class="wf-pw">비밀번호: <span class="mono">deep2026!</span></div>
+            </div>
+            <button class="wifi-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <div class="detail-cta detail-cta-single">
+        <button class="btn-primary" data-to="f-03">이용 현황 보기</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- G-01 이용 종료 확인 -->
+  <template id="tpl-g-01">
+    <div class="scr scr-list">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="f-03"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">이용 종료</div>
+        <div></div>
+      </header>
+
+      <main class="app-body list-body">
+        <section class="hero-copy hero-copy-tight">
+          <div class="hero-eyebrow">CHECK OUT</div>
+          <h1 class="hero-title">이용을 종료하시겠습니까?</h1>
+          <p class="hero-sub">현재 83%까지 충전되었고, 8분 더 유지하면 목표 85%에 도달합니다.</p>
+        </section>
+
+        <section class="summary-card">
+          <div class="price-list">
+            <div class="price-row"><span>현재 충전 상태</span><b>83%</b></div>
+            <div class="price-row"><span>남은 예약 시간</span><b>08분</b></div>
+            <div class="price-row"><span>연장 가능 여부</span><b>+30분 가능</b></div>
+          </div>
+        </section>
+      </main>
+
+      <div class="detail-cta detail-cta-dual">
+        <button class="btn-ghost-lg" data-to="f-03">계속 이용</button>
+        <button class="btn-primary" data-to="g-02">종료하고 정산</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- G-03 영수증 상세 -->
+  <template id="tpl-g-03">
+    <div class="scr scr-list">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="g-02"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">전자영수증</div>
+        <div></div>
+      </header>
+
+      <main class="app-body list-body">
+        <section class="receipt-sheet">
+          <div class="receipt-head">
+            <div class="receipt-brand">DEEP SPACE</div>
+            <div class="receipt-number">승인번호 902381</div>
+          </div>
+          <div class="price-list">
+            <div class="price-row"><span>사업자</span><b>Deep Space Inc.</b></div>
+            <div class="price-row"><span>예약번호</span><b>DS-20260422-0031</b></div>
+            <div class="price-row"><span>이용 일시</span><b>2026.04.22 11:00–13:00</b></div>
+            <div class="price-row"><span>라운지 좌석</span><b>4,000원</b></div>
+            <div class="price-row"><span>충전 실비</span><b>3,240원</b></div>
+            <div class="price-row"><span>부가서비스</span><b>4,500원</b></div>
+          </div>
+          <div class="receipt-total">
+            <span>합계</span>
+            <b>11,740원</b>
+          </div>
+        </section>
+      </main>
+
+      <div class="detail-cta detail-cta-dual">
+        <button class="btn-ghost-lg">공유</button>
+        <button class="btn-primary">PDF 저장</button>
+      </div>
+    </div>
+  </template>
+
+  <!-- H-02 예약 내역 -->
+  <template id="tpl-h-02">
+    <div class="scr scr-list">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="h-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">예약 내역</div>
+        <div></div>
+      </header>
+
+      <main class="app-body list-body">
+        <div class="chip-row">
+          <button class="chip chip-solid">전체</button>
+          <button class="chip">예정</button>
+          <button class="chip">이용완료</button>
+          <button class="chip">취소</button>
+        </div>
+
+        <div class="history-list">
+          <button class="history-card" data-to="d-05">
+            <div>
+              <div class="history-title">세종로 Deep Space</div>
+              <div class="history-meta">4/22 11:00–13:00 · 라운지 A-7 · 확정</div>
+            </div>
+            <div class="history-side">11,740원</div>
+          </button>
+          <button class="history-card" data-to="g-02">
+            <div>
+              <div class="history-title">삼성동 Deep Space</div>
+              <div class="history-meta">4/18 15:30–17:00 · 이용완료</div>
+            </div>
+            <div class="history-side">9,800원</div>
+          </button>
+          <button class="history-card">
+            <div>
+              <div class="history-title">광화문 Deep Space</div>
+              <div class="history-meta">4/10 09:00–10:00 · 취소 완료</div>
+            </div>
+            <div class="history-side">환불</div>
+          </button>
+        </div>
+      </main>
+    </div>
+  </template>
+
+  <!-- H-03 결제 내역 -->
+  <template id="tpl-h-03">
+    <div class="scr scr-list">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="h-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">결제 내역</div>
+        <div class="header-step">4월</div>
+      </header>
+
+      <main class="app-body list-body">
+        <section class="insight-card">
+          <div class="ic-label">이번 달 합계</div>
+          <div class="ic-value">84,600원</div>
+          <div class="ic-foot">총 7회 이용 · 평균 12,085원</div>
+        </section>
+
+        <div class="history-list">
+          <button class="history-card" data-to="g-03">
+            <div>
+              <div class="history-title">4/22 · 세종로 DS</div>
+              <div class="history-meta">카카오페이 · 승인 완료</div>
+            </div>
+            <div class="history-side">11,740원</div>
+          </button>
+          <button class="history-card" data-to="g-03">
+            <div>
+              <div class="history-title">4/18 · 삼성동 DS</div>
+              <div class="history-meta">Apple Pay · 승인 완료</div>
+            </div>
+            <div class="history-side">9,800원</div>
+          </button>
+          <button class="history-card" data-to="g-03">
+            <div>
+              <div class="history-title">4/11 · 판교 DS</div>
+              <div class="history-meta">신용카드 · 승인 완료</div>
+            </div>
+            <div class="history-side">13,200원</div>
+          </button>
+        </div>
+      </main>
+    </div>
+  </template>
+
+  <!-- M-07 공지사항 상세 -->
+  <template id="tpl-sheet-notice">
+    <div class="sheet">
+      <div class="sheet-grip"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">공지사항</div>
+        <div class="sheet-sub">2026.04.22 · 운영 안내</div>
+      </div>
+      <div class="notice-modal">
+        <div class="notice-modal-title">세종로 지점 출입 동선 변경 안내</div>
+        <p>4월 30일 새벽 정기 점검으로 세종로 지점은 B4 C게이트를 우선 사용합니다.</p>
+        <p>예약 고객은 앱 내 길 안내에서 갱신된 입구 좌표를 그대로 사용할 수 있습니다.</p>
+      </div>
+      <button class="sheet-cancel" data-sheet-close>닫기</button>
+    </div>
+  </template>
+
+  <!-- M-08 문의하기 -->
+  <template id="tpl-sheet-inquiry">
+    <div class="sheet">
+      <div class="sheet-grip"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">1:1 문의</div>
+        <div class="sheet-sub">예약/결제/충전 관련 문의를 남겨주세요</div>
+      </div>
+      <div class="option-list inquiry-list">
+        <button class="pill-choice is-on">예약</button>
+        <button class="pill-choice">결제</button>
+        <button class="pill-choice">충전</button>
+        <button class="pill-choice">시설</button>
+      </div>
+      <div class="inquiry-box">
+        <div class="field-label">문의 내용</div>
+        <div class="inquiry-area">세종로 지점 체크인 시간이 지나면 자동 취소되는지 확인 부탁드립니다.</div>
+      </div>
+      <button class="btn-sheet-primary btn-sheet-primary-support" data-sheet-close>
+        <span class="btn-sheet-primary__body">
+          <span class="btn-sheet-primary__title">문의 등록</span>
+          <span class="btn-sheet-primary__sub">답변은 알림함으로 전달됩니다</span>
+        </span>
+        <span class="btn-sheet-primary__meta">접수</span>
+      </button>
+      <button class="sheet-cancel" data-sheet-close>취소</button>
+    </div>
+  </template>
+
+  <!-- M-01 좌석 배치도 -->
+  <template id="tpl-sheet-seatmap">
+    <div class="sheet">
+      <div class="sheet-grip"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">좌석 배치도</div>
+        <div class="sheet-sub">라운지 A 존 · 충전기 C 라인</div>
+      </div>
+      <div class="seatmap-grid">
+        <span class="seat-box">A-1</span><span class="seat-box">A-2</span><span class="seat-box">A-3</span>
+        <span class="seat-box">A-4</span><span class="seat-box">A-5</span><span class="seat-box is-on">A-7</span>
+        <span class="seat-box is-muted">A-8</span><span class="seat-box">A-9</span><span class="seat-box">A-10</span>
+      </div>
+      <button class="btn-sheet-primary btn-sheet-primary-neutral" data-sheet-close>
+        <span class="btn-sheet-primary__body">
+          <span class="btn-sheet-primary__title">선택 내용 확인</span>
+          <span class="btn-sheet-primary__sub">현재 좌석과 충전기 구성을 유지합니다</span>
+        </span>
+        <span class="btn-sheet-primary__meta">A-7</span>
+      </button>
+    </div>
+  </template>
+
+  <!-- M-03 예약 취소 -->
+  <template id="tpl-sheet-cancel">
+    <div class="sheet">
+      <div class="sheet-grip"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">예약을 취소하시겠습니까?</div>
+        <div class="sheet-sub">이용 시작 30분 전까지는 무료 취소가 가능합니다.</div>
+      </div>
+      <div class="price-list">
+        <div class="price-row"><span>환불 예정 금액</span><b>4,000원</b></div>
+        <div class="price-row"><span>충전 실비</span><b>미발생</b></div>
+      </div>
+      <button class="btn-sheet-primary btn-sheet-primary-danger" data-sheet-close>
+        <span class="btn-sheet-primary__body">
+          <span class="btn-sheet-primary__title">취소 요청</span>
+          <span class="btn-sheet-primary__sub">무료 취소 가능 구간입니다</span>
+        </span>
+        <span class="btn-sheet-primary__meta">4,000원</span>
+      </button>
+      <button class="sheet-cancel" data-sheet-close>돌아가기</button>
+    </div>
+  </template>
+
+  <!-- M-04 내비 앱 선택 -->
+  <template id="tpl-sheet-nav">
+    <div class="sheet">
+      <div class="sheet-grip"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">어떤 내비로 안내할까요?</div>
+        <div class="sheet-sub">주차장 입구 좌표로 바로 연결됩니다.</div>
+      </div>
+      <div class="option-list">
+        <button class="option-tile"><div><div class="option-title">티맵</div><div class="option-sub">설치됨 · 바로 실행</div></div><div class="option-side">추천</div></button>
+        <button class="option-tile"><div><div class="option-title">카카오내비</div><div class="option-sub">설치됨 · 바로 실행</div></div><div class="option-side">열기</div></button>
+        <button class="option-tile"><div><div class="option-title">네이버 지도</div><div class="option-sub">설치 필요</div></div><div class="option-side">비활성</div></button>
+        <button class="option-tile"><div><div class="option-title">차량 내비게이션</div><div class="option-sub">Tesla Fleet 연동</div></div><div class="option-side">연결</div></button>
+      </div>
+      <button class="sheet-cancel" data-sheet-close>닫기</button>
+    </div>
+  </template>
+
+  <!-- M-05 시간 연장 바텀시트 -->
+  <template id="tpl-sheet-extend">
+    <div class="sheet">
+      <div class="sheet-grip"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">이용 시간 연장</div>
+        <div class="sheet-sub">현재 종료 13:00 · 원하는 시간을 선택하세요</div>
+      </div>
+      <div class="extend-options">
+        <button class="ext-opt">
+          <div class="eo-left">
+            <div class="eo-dur">+30분</div>
+            <div class="eo-new">13:30 종료</div>
+          </div>
+          <div class="eo-price"><b>1,000</b><i>원</i></div>
+        </button>
+        <button class="ext-opt is-on">
+          <div class="eo-left">
+            <div class="eo-dur">+1시간</div>
+            <div class="eo-new">14:00 종료</div>
+          </div>
+          <div class="eo-price"><b>2,000</b><i>원</i></div>
+        </button>
+        <button class="ext-opt ext-disabled">
+          <div class="eo-left">
+            <div class="eo-dur">+2시간</div>
+            <div class="eo-disabled">다음 예약이 있어 연장 불가</div>
+          </div>
+          <div class="eo-lock">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+        </button>
+      </div>
+      <button class="btn-sheet-primary btn-sheet-primary-charge" data-sheet-close>
+        <span class="btn-sheet-primary__body">
+          <span class="btn-sheet-primary__title">연장 결제하고 확정</span>
+          <span class="btn-sheet-primary__sub">+1시간 연장 · 14:00 종료</span>
+        </span>
+        <span class="btn-sheet-primary__meta">2,000원</span>
+      </button>
+      <button class="sheet-cancel" data-sheet-close>취소</button>
+    </div>
+  </template>
+
+<script src="script.js"></script>
+</body>
+</html>

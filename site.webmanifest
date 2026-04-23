@@ -1,0 +1,17 @@
+{
+  "name": "DEEP SPACE",
+  "short_name": "DEEP",
+  "description": "전기차 충전과 업무 라운지를 연결한 Deep Space 앱 프로토타입",
+  "start_url": "./index.html?mobile=1",
+  "display": "standalone",
+  "background_color": "#05080f",
+  "theme_color": "#05080f",
+  "icons": [
+    {
+      "src": "./app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
