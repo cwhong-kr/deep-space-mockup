@@ -267,7 +267,7 @@ const SCREENS = {
     purpose: "내 차량과 계정 정보 관리",
     description: "이용 통계, 차량 정보, 각종 관리 메뉴를 제공하는 프로필 허브입니다.",
     components: ["프로필", "통계 카드", "차량 정보", "메뉴 리스트", "탭바"],
-    next: ["h-02", "h-03"]
+    next: ["h-02", "h-03", "h-04", "h-05"]
   },
   "h-02": {
     code: "H-02",
@@ -289,7 +289,26 @@ const SCREENS = {
     components: ["월 합계 카드", "결제 이력 카드"],
     next: ["g-03"]
   },
-  "m-01": {
+  "h-04": {
+    code: "H-04",
+    group: "H",
+    title: "이용약관 · 정책",
+    template: "tpl-h-04",
+    purpose: "서비스 약관과 운영 정책 확인",
+    description: "이용약관, 개인정보 처리방침, 위치기반 서비스 정책을 한 화면에서 확인하는 정책 허브입니다.",
+    components: ["정책 요약", "약관 리스트", "업데이트 이력", "문의 연결"],
+    next: ["m-07", "m-08", "h-01"]
+  },
+  "h-05": {
+    code: "H-05",
+    group: "H",
+    title: "회원탈퇴",
+    template: "tpl-h-05",
+    purpose: "회원탈퇴 전 최종 안내와 사유 수집",
+    description: "예약, 결제, 충전 이력과 차량 정보 삭제 범위를 명확히 안내하는 회원탈퇴 확인 화면입니다.",
+    components: ["주의사항", "삭제 범위", "탈퇴 사유", "최종 탈퇴 CTA"],
+    next: ["a-02", "h-01"]
+  },  "m-01": {
     code: "M-01",
     group: "M",
     title: "좌석 배치도",
@@ -393,6 +412,33 @@ const SHEET_ALIASES = {
   inquiry: "m-08"
 };
 
+const FLOW_SCENARIOS = [
+  {
+    id: "main",
+    title: "메인 여정",
+    description: "앱 진입부터 예약, 길 안내, 체크인, 정산까지 이어지는 핵심 서비스 플로우입니다.",
+    screens: ["a-01", "a-02", "a-03", "a-04", "a-05", "b-01", "c-01", "c-02", "d-01", "d-02", "d-03", "d-04", "e-01", "d-05", "f-01", "f-02", "f-03", "g-01", "g-02", "g-03"]
+  },
+  {
+    id: "arrival",
+    title: "도착 · 체크인",
+    description: "운전 중 반경 진입 Push부터 체크인 완료와 이용 시작 안내까지의 현장 플로우입니다.",
+    screens: ["e-01", "d-05", "f-01", "f-02", "f-03"]
+  },
+  {
+    id: "settlement",
+    title: "이용 · 연장 · 정산",
+    description: "이용 현황, 시간 연장, 종료 확인, 정산 완료로 이어지는 운영 플로우입니다.",
+    screens: ["f-03", "m-05", "g-01", "g-02", "g-03"]
+  },
+  {
+    id: "account",
+    title: "마이페이지 · 정책",
+    description: "예약/결제 내역 확인, 정책 열람, 회원탈퇴까지 포함한 계정 관리 플로우입니다.",
+    screens: ["h-01", "h-02", "h-03", "h-04", "m-08", "h-05"]
+  }
+];
+
 function createDefaultBooking() {
   return {
     duration: 180,
@@ -434,7 +480,8 @@ const state = {
   },
   runtimeMobile: false,
   mobileRuntimeBooted: false,
-  mobileDevOpen: false
+  mobileDevOpen: false,
+  flowPanelOpen: false
 };
 
 const el = {
@@ -453,6 +500,17 @@ const el = {
   compList: document.querySelector("#compList"),
   flowNexts: document.querySelector("#flowNexts"),
   flowChips: document.querySelector("#flowChips"),
+  prototypeNav: document.querySelector("#prototypeNav"),
+  flowToggle: document.querySelector("#flowToggle"),
+  flowOverlay: document.querySelector("#flowOverlay"),
+  flowFocus: document.querySelector("#flowFocus"),
+  flowTrack: document.querySelector("#flowTrack"),
+  flowScenarios: document.querySelector("#flowScenarios"),
+  flowBoard: document.querySelector("#flowBoard"),
+  flowBoardSvg: document.querySelector("#flowBoardSvg"),
+  flowBoardGroups: document.querySelector("#flowBoardGroups"),
+  flowBoardNodes: document.querySelector("#flowBoardNodes"),
+  flowBoardViewport: document.querySelector("#flowBoardViewport"),
   pushPreview: document.querySelector("#pushPreview"),
   pushTitle: document.querySelector("#pushTitle"),
   pushBody: document.querySelector("#pushBody"),
@@ -494,6 +552,10 @@ function syncRuntimeMode() {
     state.mobileDevOpen = false;
   }
 
+  if (mobileRuntime) {
+    state.flowPanelOpen = false;
+  }
+
   if (shouldBootMobile) {
     state.mobileRuntimeBooted = true;
     state.screenId = "a-01";
@@ -502,6 +564,7 @@ function syncRuntimeMode() {
   }
 
   syncMobileDevUI();
+  syncFlowPanelUI();
 
   if ((modeChanged || shouldBootMobile) && el.appScreen.childElementCount) {
     renderAll();
@@ -566,6 +629,286 @@ function syncDemoButton() {
     el.demoToggleLabel.textContent = state.demo.running ? "Stop Demo" : "Auto Demo";
   }
   syncMobileDevUI();
+}
+
+function previousMainFlowId(id) {
+  const index = MAIN_FLOW.indexOf(id);
+  if (index <= 0) return null;
+  return MAIN_FLOW[index - 1];
+}
+
+function compareScreenCode(left, right) {
+  const [leftGroup = "", leftIndex = "0"] = left.code.split("-");
+  const [rightGroup = "", rightIndex = "0"] = right.code.split("-");
+
+  if (leftGroup !== rightGroup) {
+    return GROUP_ORDER.indexOf(leftGroup) - GROUP_ORDER.indexOf(rightGroup);
+  }
+
+  return Number(leftIndex) - Number(rightIndex);
+}
+
+function buildFlowEdgePath(fromNode, toNode) {
+  const startX = fromNode.x + fromNode.w;
+  const startY = fromNode.y + fromNode.h / 2;
+  const endX = toNode.x;
+  const endY = toNode.y + toNode.h / 2;
+  const bend = Math.max(44, Math.abs(endX - startX) * 0.4);
+
+  return `M ${startX} ${startY} C ${startX + bend} ${startY}, ${endX - bend} ${endY}, ${endX} ${endY}`;
+}
+
+function buildFlowBoardLayout() {
+  const nodeWidth = 168;
+  const nodeHeight = 72;
+  const baseX = 152;
+  const baseY = 62;
+  const columnGap = 196;
+  const rowGap = 108;
+  const nodes = new Map();
+  const groups = [];
+  let maxRight = 0;
+
+  GROUP_ORDER.forEach((group, groupIndex) => {
+    const rowY = baseY + groupIndex * rowGap;
+    groups.push({
+      group,
+      label: GROUP_LABELS[group],
+      x: 20,
+      y: rowY - 44
+    });
+
+    if (group === "M") return;
+
+    const screens = Object.entries(SCREENS)
+      .map(([id, screen]) => ({ id, ...screen }))
+      .filter((screen) => screen.group === group)
+      .sort(compareScreenCode);
+
+    screens.forEach((screen, columnIndex) => {
+      const x = baseX + columnIndex * columnGap;
+      nodes.set(screen.id, {
+        id: screen.id,
+        x,
+        y: rowY,
+        w: nodeWidth,
+        h: nodeHeight,
+        group: screen.group
+      });
+      maxRight = Math.max(maxRight, x + nodeWidth);
+    });
+  });
+
+  const sheetRowY = baseY + GROUP_ORDER.indexOf("M") * rowGap;
+  const sheetBuckets = new Map();
+
+  Object.entries(SCREENS)
+    .map(([id, screen]) => ({ id, ...screen }))
+    .filter((screen) => screen.group === "M")
+    .sort(compareScreenCode)
+    .forEach((screen) => {
+      const key = screen.parent || screen.id;
+      if (!sheetBuckets.has(key)) {
+        sheetBuckets.set(key, []);
+      }
+      sheetBuckets.get(key).push(screen);
+    });
+
+  const orderedBuckets = [...sheetBuckets.entries()].sort(([leftParent], [rightParent]) => {
+    const leftNode = nodes.get(leftParent);
+    const rightNode = nodes.get(rightParent);
+    const leftX = leftNode ? leftNode.x : Number.MAX_SAFE_INTEGER;
+    const rightX = rightNode ? rightNode.x : Number.MAX_SAFE_INTEGER;
+    return leftX - rightX;
+  });
+
+  let sheetCursor = baseX;
+  orderedBuckets.forEach(([parentId, screens]) => {
+    const parentNode = nodes.get(parentId);
+    const width = screens.length * nodeWidth + (screens.length - 1) * 26;
+    const desiredX = parentNode
+      ? Math.max(baseX, parentNode.x + parentNode.w / 2 - width / 2)
+      : sheetCursor;
+    const startX = Math.max(desiredX, sheetCursor);
+
+    screens.forEach((screen, bucketIndex) => {
+      const x = startX + bucketIndex * (nodeWidth + 26);
+      nodes.set(screen.id, {
+        id: screen.id,
+        x,
+        y: sheetRowY,
+        w: nodeWidth,
+        h: nodeHeight,
+        group: screen.group
+      });
+      maxRight = Math.max(maxRight, x + nodeWidth);
+    });
+
+    sheetCursor = startX + width + 28;
+  });
+
+  return {
+    width: Math.max(1200, maxRight + 72),
+    height: sheetRowY + nodeHeight + 84,
+    groups,
+    nodes
+  };
+}
+
+function renderFlowBoard(currentId) {
+  if (!el.flowBoard || !el.flowBoardSvg || !el.flowBoardGroups || !el.flowBoardNodes) return;
+
+  const layout = buildFlowBoardLayout();
+  const nodeEntries = [...layout.nodes.entries()];
+  const seenEdges = new Set();
+  const edgeMarkup = [];
+
+  Object.entries(SCREENS).forEach(([id, screen]) => {
+    const fromNode = layout.nodes.get(id);
+    if (!fromNode) return;
+
+    (screen.next || []).forEach((nextId) => {
+      const toNode = layout.nodes.get(nextId);
+      if (!toNode) return;
+
+      const edgeKey = `${id}->${nextId}`;
+      if (seenEdges.has(edgeKey)) return;
+      seenEdges.add(edgeKey);
+
+      edgeMarkup.push(`
+        <path
+          class="flow-board__edge${screen.type === "sheet" || getScreen(nextId)?.type === "sheet" ? " is-sheet" : ""}${id === currentId || nextId === currentId ? " is-current" : ""}"
+          d="${buildFlowEdgePath(fromNode, toNode)}"
+        />
+      `);
+    });
+
+    if (screen.type === "sheet" && screen.parent) {
+      const parentNode = layout.nodes.get(screen.parent);
+      if (!parentNode) return;
+
+      const edgeKey = `${screen.parent}->${id}`;
+      if (seenEdges.has(edgeKey)) return;
+      seenEdges.add(edgeKey);
+
+      edgeMarkup.push(`
+        <path
+          class="flow-board__edge is-sheet${screen.parent === currentId || id === currentId ? " is-current" : ""}"
+          d="${buildFlowEdgePath(parentNode, fromNode)}"
+        />
+      `);
+    }
+  });
+
+  el.flowBoard.style.width = `${layout.width}px`;
+  el.flowBoard.style.height = `${layout.height}px`;
+  el.flowBoardSvg.setAttribute("viewBox", `0 0 ${layout.width} ${layout.height}`);
+  el.flowBoardSvg.innerHTML = edgeMarkup.join("");
+
+  el.flowBoardGroups.innerHTML = layout.groups
+    .map(({ group, label, x, y }) => `
+      <div class="flow-board__group" style="left:${x}px;top:${y}px;">
+        <span class="flow-board__group-code">${group}</span>
+        <span>${label}</span>
+      </div>
+    `)
+    .join("");
+
+  el.flowBoardNodes.innerHTML = nodeEntries
+    .map(([id, node]) => {
+      const screen = getScreen(id);
+      return `
+        <button
+          class="flow-board__node${id === currentId ? " is-current" : ""}${screen.type === "sheet" ? " is-sheet" : ""}"
+          data-to="${id}"
+          style="left:${node.x}px;top:${node.y}px;"
+        >
+          <div class="flow-board__node-code">${screen.code}</div>
+          <div class="flow-board__node-title">${screen.title}</div>
+          <div class="flow-board__node-sub">${screen.purpose}</div>
+        </button>
+      `;
+    })
+    .join("");
+}
+
+function renderFlowPanel() {
+  if (!el.flowFocus || !el.flowTrack || !el.flowScenarios) return;
+
+  const currentId = currentViewId();
+  const current = getScreen(currentId);
+  if (!current) return;
+
+  el.flowFocus.innerHTML = `
+    <div class="flow-focus__code">${current.code}</div>
+    <div class="flow-focus__title">${current.title}</div>
+    <div class="flow-focus__desc">${current.description}</div>
+  `;
+
+  const relatedIds = [
+    current.parent,
+    previousMainFlowId(current.type === "sheet" ? current.parent : currentId),
+    currentId,
+    ...(current.next || [])
+  ].filter((value, index, array) => value && array.indexOf(value) === index);
+
+  el.flowTrack.innerHTML = relatedIds
+    .map((id) => {
+      const item = getScreen(id);
+      if (!item) return "";
+      return `
+        <button class="flow-node${id === currentId ? " is-current" : ""}${item.type === "sheet" ? " is-sheet" : ""}" data-to="${id}">
+          <span class="flow-node__code">${item.code}</span>
+          <span>${item.title}</span>
+        </button>
+      `;
+    })
+    .join("");
+
+  el.flowScenarios.innerHTML = FLOW_SCENARIOS.map((scenario) => {
+    const includesCurrent = scenario.screens.includes(currentId);
+    const path = scenario.screens
+      .map((id) => {
+        const item = getScreen(id);
+        if (!item) return "";
+        return `
+          <button class="flow-scenario__item${id === currentId ? " is-current" : ""}" data-to="${id}">
+            <span class="flow-scenario__code">${item.code}</span>
+            <span>${item.title}</span>
+          </button>
+        `;
+      })
+      .join("");
+
+    return `
+      <section class="flow-scenario${includesCurrent ? " is-current" : ""}">
+        <div class="flow-scenario__head">
+          <div class="flow-scenario__title">${scenario.title}</div>
+          ${includesCurrent ? '<span class="flow-scenario__badge">NOW</span>' : ""}
+        </div>
+        <div class="flow-scenario__desc">${scenario.description}</div>
+        <div class="flow-scenario__path">${path}</div>
+      </section>
+    `;
+  }).join("");
+
+  renderFlowBoard(currentId);
+}
+
+function syncFlowPanelUI() {
+  if (!el.flowOverlay || !el.flowToggle || !el.prototypeNav) return;
+
+  const canOpen = !state.runtimeMobile;
+  const isOpen = canOpen && state.flowPanelOpen;
+
+  el.flowOverlay.hidden = !isOpen;
+  document.body.classList.toggle("flow-open", isOpen);
+  el.flowToggle.classList.toggle("is-active", isOpen);
+  el.prototypeNav.classList.toggle("is-active", !isOpen);
+
+  if (isOpen) {
+    renderFlowPanel();
+  }
 }
 
 function syncMobileDevUI() {
@@ -897,6 +1240,7 @@ function renderAll() {
   renderFlowChips();
   el.screenCount.textContent = Object.keys(SCREENS).length;
   syncMobileDevUI();
+  syncFlowPanelUI();
 }
 
 function navigate(id) {
@@ -1115,6 +1459,19 @@ function handleDocumentClick(event) {
     return;
   }
 
+  if (target.closest("#flowToggle")) {
+    event.preventDefault();
+    state.flowPanelOpen = !state.flowPanelOpen;
+    syncFlowPanelUI();
+    return;
+  }
+
+  if (target.closest("[data-flow-close]")) {
+    state.flowPanelOpen = false;
+    syncFlowPanelUI();
+    return;
+  }
+
   if (state.mobileDevOpen && !target.closest("#mobileDev")) {
     state.mobileDevOpen = false;
     syncMobileDevUI();
@@ -1137,6 +1494,9 @@ function handleDocumentClick(event) {
 
   const to = target.closest("[data-to]");
   if (to) {
+    if (target.closest("#flowOverlay")) {
+      state.flowPanelOpen = false;
+    }
     navigate(to.dataset.to);
     return;
   }
@@ -1233,6 +1593,12 @@ function bindEvents() {
       event.preventDefault();
       el.railSearch?.focus();
       el.railSearch?.select();
+      return;
+    }
+
+    if (event.key === "Escape" && state.flowPanelOpen) {
+      state.flowPanelOpen = false;
+      syncFlowPanelUI();
     }
   });
 
@@ -1252,3 +1618,4 @@ renderAll();
 updateStatusTime();
 syncDemoButton();
 window.setInterval(tickCounters, 1000);
+

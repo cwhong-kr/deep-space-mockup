@@ -54,8 +54,8 @@
         </div>
         <div class="topbar-divider"></div>
         <nav class="topnav">
-          <a class="topnav-link is-active">Prototype</a>
-          <a class="topnav-link">Flow</a>
+          <a class="topnav-link is-active" id="prototypeNav">Prototype</a>
+          <a class="topnav-link" id="flowToggle" role="button" tabindex="0">Flow</a>
           <a class="topnav-link">Components</a>
           <a class="topnav-link">Tokens</a>
         </nav>
@@ -267,6 +267,56 @@
         </div>
       </aside>
     </main>
+
+    <div class="flow-overlay" id="flowOverlay" hidden>
+      <button class="flow-overlay__backdrop" type="button" data-flow-close aria-label="플로우 닫기"></button>
+      <aside class="flow-panel" aria-label="서비스 플로우">
+        <div class="flow-panel__head">
+          <div>
+            <div class="flow-panel__eyebrow">FLOW MAP</div>
+            <div class="flow-panel__title">Connected Screen Overview</div>
+          </div>
+          <button class="icon-btn flow-panel__close" id="flowPanelClose" type="button" data-flow-close aria-label="닫기">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <div class="flow-panel__body flow-panel__body-board">
+          <section class="flow-board-area">
+            <div class="flow-board-toolbar">
+              <div class="flow-board-toolbar__hint">화면 노드를 클릭하면 해당 프로토타입 화면으로 이동합니다.</div>
+              <div class="flow-board-toolbar__legend">
+                <span class="flow-legend-dot is-current"></span>
+                <span>현재 화면</span>
+                <span class="flow-legend-dot is-sheet"></span>
+                <span>시트/모달</span>
+              </div>
+            </div>
+
+            <div class="flow-board-viewport" id="flowBoardViewport">
+              <div class="flow-board" id="flowBoard">
+                <svg class="flow-board__svg" id="flowBoardSvg" aria-hidden="true"></svg>
+                <div class="flow-board__groups" id="flowBoardGroups"></div>
+                <div class="flow-board__nodes" id="flowBoardNodes"></div>
+              </div>
+            </div>
+          </section>
+
+          <aside class="flow-sidebar">
+            <section class="flow-panel__section">
+              <div class="flow-panel__label">CURRENT VIEW</div>
+              <div class="flow-focus" id="flowFocus"></div>
+              <div class="flow-track" id="flowTrack"></div>
+            </section>
+
+            <section class="flow-panel__section">
+              <div class="flow-panel__label">KEY SCENARIOS</div>
+              <div class="flow-scenarios" id="flowScenarios"></div>
+            </section>
+          </aside>
+        </div>
+      </aside>
+    </div>
   </div>
 
 
@@ -1313,9 +1363,14 @@
             <span class="mm-label">1:1 문의</span>
             <svg class="mm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
-          <button class="mm">
+          <button class="mm" data-to="h-04">
             <svg class="mm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             <span class="mm-label">이용약관 · 정책</span>
+            <svg class="mm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button class="mm" data-to="h-05">
+            <svg class="mm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 3h6"/><path d="M10 8v8"/><path d="M14 8v8"/><path d="M5 6h14"/><path d="M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14"/></svg>
+            <span class="mm-label">회원탈퇴</span>
             <svg class="mm-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </section>
@@ -2037,6 +2092,106 @@
     </div>
   </template>
 
+
+  <!-- H-04 이용약관 · 정책 -->
+  <template id="tpl-h-04">
+    <div class="scr scr-list">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="h-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">이용약관 · 정책</div>
+        <div></div>
+      </header>
+
+      <main class="app-body list-body">
+        <section class="policy-hero">
+          <div class="policy-hero__eyebrow">POLICY CENTER</div>
+          <div class="policy-hero__title">서비스 운영 기준과<br/>개인정보 처리 원칙을 확인하세요</div>
+          <div class="policy-hero__sub">마지막 업데이트 2026.04.18 · 주요 변경사항은 공지사항에서 함께 안내됩니다.</div>
+        </section>
+
+        <div class="policy-list">
+          <button class="policy-row" data-sheet="notice">
+            <div>
+              <div class="policy-row__title">서비스 이용약관</div>
+              <div class="policy-row__sub">예약, 결제, 체크인, 공간 이용 기준</div>
+            </div>
+            <span class="policy-row__meta">v2.4</span>
+          </button>
+          <button class="policy-row">
+            <div>
+              <div class="policy-row__title">개인정보 처리방침</div>
+              <div class="policy-row__sub">수집 항목, 보관 기간, 제3자 제공 범위</div>
+            </div>
+            <span class="policy-row__meta">필수</span>
+          </button>
+          <button class="policy-row">
+            <div>
+              <div class="policy-row__title">위치기반 서비스 이용약관</div>
+              <div class="policy-row__sub">반경 진입 알림, 길 안내, 주차 동선 최적화</div>
+            </div>
+            <span class="policy-row__meta">위치</span>
+          </button>
+          <button class="policy-row">
+            <div>
+              <div class="policy-row__title">전자금융거래 이용약관</div>
+              <div class="policy-row__sub">결제 승인, 환불, 영수증 발급 정책</div>
+            </div>
+            <span class="policy-row__meta">결제</span>
+          </button>
+        </div>
+
+        <section class="policy-note">
+          <div class="policy-note__title">정책 문의</div>
+          <div class="policy-note__sub">약관 해석이나 개인정보 요청이 필요한 경우 1:1 문의로 접수할 수 있습니다.</div>
+          <button class="btn-outline-sm" data-sheet="inquiry">1:1 문의 연결</button>
+        </section>
+      </main>
+    </div>
+  </template>
+
+  <!-- H-05 회원탈퇴 -->
+  <template id="tpl-h-05">
+    <div class="scr scr-list scr-withdraw">
+      <header class="app-header app-header-glass">
+        <button class="icon-btn" data-to="h-01"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+        <div class="header-title">회원탈퇴</div>
+        <div></div>
+      </header>
+
+      <main class="app-body list-body">
+        <section class="withdraw-alert">
+          <div class="withdraw-alert__eyebrow">ACCOUNT DELETE</div>
+          <div class="withdraw-alert__title">탈퇴 후에는 예약, 결제, 차량 연동 정보를 복구할 수 없습니다</div>
+          <div class="withdraw-alert__sub">진행 중 예약이 있다면 먼저 취소해야 하며, 미정산 건이 있으면 탈퇴가 제한됩니다.</div>
+        </section>
+
+        <section class="withdraw-card">
+          <div class="withdraw-card__title">탈퇴 시 삭제되는 정보</div>
+          <div class="withdraw-checks">
+            <div class="withdraw-check">프로필, 차량번호, 즐겨찾기 지점</div>
+            <div class="withdraw-check">예약/체크인/충전 이용 기록</div>
+            <div class="withdraw-check">영수증 조회 링크와 알림 수신 설정</div>
+          </div>
+        </section>
+
+        <section class="withdraw-card">
+          <div class="withdraw-card__title">탈퇴 사유</div>
+          <div class="withdraw-reasons">
+            <button class="chip chip-solid">이용 빈도 낮음</button>
+            <button class="chip">요금 부담</button>
+            <button class="chip">앱 사용성 불만</button>
+            <button class="chip">기타</button>
+          </div>
+        </section>
+
+        <div class="withdraw-actions">
+          <button class="withdraw-btn" data-to="a-02">회원탈퇴 진행</button>
+          <button class="sheet-cancel" data-to="h-01">돌아가기</button>
+        </div>
+      </main>
+    </div>
+  </template>
+
   <!-- M-07 공지사항 상세 -->
   <template id="tpl-sheet-notice">
     <div class="sheet">
@@ -2194,3 +2349,7 @@
 <script src="script.js"></script>
 </body>
 </html>
+
+
+
+
