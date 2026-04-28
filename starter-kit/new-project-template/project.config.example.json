@@ -1,0 +1,13 @@
+{
+  "projectName": "New Project",
+  "brandName": "BRAND",
+  "version": "v0.1",
+  "owner": "Team",
+  "startDate": "2026-04-24",
+  "targetPlatform": ["web", "mobile"],
+  "prototype": {
+    "runtimeMode": "desktop+mobile",
+    "flowOverlay": true,
+    "autoDemo": true
+  }
+}
